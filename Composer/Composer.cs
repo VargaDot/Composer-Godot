@@ -18,7 +18,7 @@ namespace ComposerLib
         private Queue<Scene> SceneQueue = new();
         private Scene CurrentLoadedScene = null;
 
-        private readonly ComposerSettings DefaultSettings = new(){SceneParent = ((SceneTree)Engine.GetMainLoop()).Root};
+        private readonly CreateSettings DefaultSettings = new(){SceneParent = ((SceneTree)Engine.GetMainLoop()).Root};
 
         public void AddScene(string name, string path)
         {
@@ -44,7 +44,7 @@ namespace ComposerLib
             SceneQueue.Enqueue(Scenes[name]);
         }
 
-        public void CreateScene(string name, ComposerSettings settings = null)
+        public void CreateScene(string name, CreateSettings settings = null)
         {
             if (settings == null) settings = DefaultSettings;
 

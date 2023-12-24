@@ -14,7 +14,7 @@ public partial class Main : Node2D
 
         await ToSignal(Composer,Composer.SignalName.SceneLoaded);
 
-        Composer.CreateScene("MainMenu", new ComposerSettings(){SceneParent = this});
+        Composer.CreateScene("MainMenu", new CreateSettings(){SceneParent = this});
 
         await ToSignal(GetTree().CreateTimer(2),SceneTreeTimer.SignalName.Timeout);
 
