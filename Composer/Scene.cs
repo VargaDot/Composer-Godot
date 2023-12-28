@@ -5,6 +5,12 @@ namespace ComposerLib
 {
     public partial class Scene : Node
     {
+        [Signal]
+        public delegate void FinishedLoadingEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void FinishedCreatingEventHandler(string sceneName);
+
         public string InternalName {get; private set;}
         public string Path {get; set;}
         public PackedScene Resource {get; set;} = null;
@@ -14,6 +20,13 @@ namespace ComposerLib
         {
             InternalName = internalName;
             Path = path;
+        }
+
+        public void Load()
+        {
+            if (Resource != null) return;
+
+            Loader.AddToQueue(this);
         }
 
         public void Create(Node parent)
@@ -26,12 +39,23 @@ namespace ComposerLib
 
             Instance = Resource.Instantiate();
             parent.AddChild(Instance);
+
+            EmitSignal(SignalName.FinishedCreating, InternalName);
         }
 
         public void Remove()
         {
             Resource?.Dispose();
             Instance?.QueueFree();
+        }
+
+        internal void OnLoaded(Scene scene, PackedScene resource)
+        {
+            if (scene.InternalName == InternalName && resource != null)
+            {
+                Resource = resource;
+                EmitSignal(SignalName.FinishedLoading, InternalName);
+            }
         }
     }
 }

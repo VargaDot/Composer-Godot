@@ -7,18 +7,21 @@ namespace ComposerLib
     public partial class Composer : Node
     {
         [Signal]
-        public delegate void SceneBeganLoadingEventHandler(Scene scene);
+        public delegate void SceneLoadedEventHandler(string sceneName);
 
         [Signal]
-        public delegate void SceneLoadedEventHandler(Scene scene);
+        public delegate void SceneCreatedEventHandler(string sceneName);
 
         public Godot.Collections.Dictionary<string, Scene> Scenes = new();
 
-
-        private Queue<Scene> SceneQueue = new();
-        private Scene CurrentLoadedScene = null;
-
         private readonly CreateSettings DefaultSettings = new(){SceneParent = ((SceneTree)Engine.GetMainLoop()).Root};
+
+        private readonly Loader Loader = new();
+
+        public override void _EnterTree()
+        {
+            AddChild(Loader);
+        }
 
         public void AddScene(string name, string path)
         {
@@ -29,6 +32,8 @@ namespace ComposerLib
             }
 
             var scene = new Scene(name, path);
+            scene.FinishedLoading += OnSceneLoaded;
+            scene.FinishedCreating += OnSceneCreated;
 
             Scenes.Add(name,scene);
         }
@@ -41,7 +46,7 @@ namespace ComposerLib
                 return;
             }
 
-            SceneQueue.Enqueue(Scenes[name]);
+            Scenes[name].Load();
         }
 
         public void CreateScene(string name, CreateSettings settings = null)
@@ -69,28 +74,14 @@ namespace ComposerLib
             Scenes.Remove(name);
         }
 
-        public override void _Process(double delta)
+        private void OnSceneCreated(string sceneName)
         {
-            base._Process(delta);
+            EmitSignal(SignalName.SceneCreated, sceneName);
+        }
 
-            if (CurrentLoadedScene == null)
-            {
-                if (SceneQueue.Count > 0)
-                {
-                    CurrentLoadedScene = SceneQueue.Dequeue();
-                    EmitSignal(SignalName.SceneBeganLoading, CurrentLoadedScene);
-                    ResourceLoader.LoadThreadedRequest(CurrentLoadedScene.Path);
-                }
-            }
-            else
-            {
-                if (ResourceLoader.LoadThreadedGetStatus(CurrentLoadedScene.Path) == ResourceLoader.ThreadLoadStatus.Loaded)
-                {
-                    EmitSignal(SignalName.SceneLoaded, CurrentLoadedScene);
-                    Scenes[CurrentLoadedScene.InternalName].Resource = (PackedScene)ResourceLoader.LoadThreadedGet(CurrentLoadedScene.Path);
-                    CurrentLoadedScene = null;
-                }
-            }
+        private void OnSceneLoaded(string sceneName)
+        {
+            EmitSignal(SignalName.SceneLoaded, sceneName);
         }
     }
 }
