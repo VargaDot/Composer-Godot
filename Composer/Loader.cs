@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace ComposerLib
 {
-    public partial class Loader: Node
+    internal partial class Loader: Node
     {
         [Signal]
-        public delegate void LoaderStartedEventHandler(Scene scene);
+        internal delegate void LoaderStartedEventHandler(Scene scene);
 
         [Signal]
-        public delegate void LoaderFinishedEventHandler(Scene scene, PackedScene resource=null);
+        internal delegate void LoaderFinishedEventHandler(Scene scene, PackedScene resource=null);
 
         private static Queue<Scene> SceneQueue = new();
         private static Scene CurrentLoadedScene = null;
 
-        public static void AddToQueue(Scene scene)
+        internal static void AddToQueue(Scene scene)
         {
             SceneQueue.Enqueue(scene);
         }
