@@ -8,8 +8,18 @@ namespace ComposerLib
 
     }
 
-    public class CreateSettings
+    public class CreateSettings : ComposerSettings
     {
-        public Node SceneParent {get; set;}
+        public Node SceneParent {get; set;} = null;
+    }
+
+    public class LoadSettings : CreateSettings
+    {
+        public bool InstantCreate {get; set;} = false;
+    }
+
+    public class AddSettings : LoadSettings
+    {
+        public bool InstantLoad {get; set;} = false;
     }
 }
