@@ -1,10 +1,8 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 namespace ComposerLib
 {
-    [GlobalClass]
     public partial class Composer : Node
     {
         [Signal]

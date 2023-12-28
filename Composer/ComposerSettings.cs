@@ -3,12 +3,7 @@ using System;
 
 namespace ComposerLib
 {
-    public class ComposerSettings
-    {
-
-    }
-
-    public class CreateSettings : ComposerSettings
+    public class CreateSettings
     {
         public Node SceneParent {get; set;} = null;
     }
@@ -21,5 +16,10 @@ namespace ComposerLib
     public class AddSettings : LoadSettings
     {
         public bool InstantLoad {get; set;} = false;
+    }
+
+    public class ComposerSettings: AddSettings
+    {
+
     }
 }
