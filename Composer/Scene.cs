@@ -45,8 +45,17 @@ namespace ComposerLib
 
         public void Remove()
         {
+            Instance?.QueueFree();
+            Instance = null;
+        }
+
+        public new void Dispose()
+        {
             Resource?.Dispose();
             Instance?.QueueFree();
+
+            Resource = null;
+            Instance = null;
         }
 
         internal void OnLoaded(Scene scene, PackedScene resource)

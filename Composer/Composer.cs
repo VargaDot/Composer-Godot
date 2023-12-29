@@ -22,6 +22,17 @@ namespace ComposerLib
             AddChild(Loader);
         }
 
+        public Scene GetScene(string name)
+        {
+            if (!Scenes.ContainsKey(name))
+            {
+                GD.PrintErr($"GetScene error: Scene {name} doesn't exist in memory.");
+                return null;
+            }
+
+            return Scenes[name];
+        }
+
         public void AddScene(string name, string path, AddSettings settings = null)
         {
             if (Scenes.ContainsKey(name))
