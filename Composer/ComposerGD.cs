@@ -6,10 +6,29 @@ namespace ComposerLib
     public partial class ComposerGD: Node
     {
         [Signal]
+        public delegate void SceneBeganLoadingEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneLoadingProcessUpdatedEventHandler(string sceneName, float progress);
+
+        [Signal]
         public delegate void SceneLoadedEventHandler(string sceneName);
 
         [Signal]
         public delegate void SceneCreatedEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneEnabledEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneDisabledEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneRemovedEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneDisposedEventHandler(string sceneName);
+
 
         private Composer Composer;
         private readonly Array<string> AllowedSettings = new(){

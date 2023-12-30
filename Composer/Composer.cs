@@ -6,10 +6,29 @@ namespace ComposerLib
     public partial class Composer : Node
     {
         [Signal]
+        public delegate void SceneBeganLoadedEventHandler(string sceneName);
+
+        [Signal]
         public delegate void SceneLoadedEventHandler(string sceneName);
 
         [Signal]
+        public delegate void SceneLoadingProcessUpdatedEventHandler(string sceneName, float progress);
+
+        [Signal]
         public delegate void SceneCreatedEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneEnabledEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneDisabledEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneRemovedEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneDisposedEventHandler(string sceneName);
+
 
         public Godot.Collections.Dictionary<string, Scene> Scenes = new();
         internal ComposerGD ComposerGD {get; set;} = null;
@@ -19,6 +38,8 @@ namespace ComposerLib
         public override void _EnterTree()
         {
             AddChild(Loader,true);
+            Loader.LoaderStarted += OnSceneBeganLoading;
+            Loader.LoaderLoadingUpdated += OnLoadingUpdated;
         }
 
         public Scene GetScene(string name)
@@ -106,6 +127,8 @@ namespace ComposerLib
             }
 
             Scenes[name].Enable();
+            EmitSignal(SignalName.SceneEnabled, name);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneEnabled, name);
         }
 
         public void DisableScene(string name)
@@ -117,6 +140,8 @@ namespace ComposerLib
             }
 
             Scenes[name].Disable();
+            EmitSignal(SignalName.SceneDisabled, name);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisabled, name);
         }
 
         public void RemoveScene(string name)
@@ -128,6 +153,8 @@ namespace ComposerLib
             }
 
             Scenes[name].Remove();
+            EmitSignal(SignalName.SceneRemoved, name);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneRemoved, name);
         }
 
         public void DisposeScene(string name)
@@ -138,8 +165,14 @@ namespace ComposerLib
                 return;
             }
 
-            Scenes[name].Dispose();
+            var scene = Scenes[name];
+            scene.FinishedLoading -= OnSceneLoaded;
+            scene.FinishedCreating -= OnSceneCreated;
+            scene.Dispose();
             Scenes.Remove(name);
+
+            EmitSignal(SignalName.SceneDisposed, name);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisposed, name);
         }
 
         private void VerifyPreAddSettings(string name, AddSettings settings)
@@ -178,7 +211,7 @@ namespace ComposerLib
 
         private void VerifyPreCreateSettings(string name, CreateSettings settings)
         {
-            if (settings.SceneParent == null)
+            if (!IsInstanceValid(settings.SceneParent))
             {
                 throw new ArgumentException($"Invalid SceneParent argument for CreateScene, scene {name}");
             }
@@ -196,6 +229,18 @@ namespace ComposerLib
         {
             EmitSignal(SignalName.SceneCreated, sceneName);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneCreated, sceneName);
+        }
+
+        private void OnSceneBeganLoading(Scene scene)
+        {
+            EmitSignal(SignalName.SceneBeganLoaded, scene.InternalName);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneBeganLoading, scene.InternalName);
+        }
+
+        private void OnLoadingUpdated(Scene scene, float progress)
+        {
+            EmitSignal(SignalName.SceneLoadingProcessUpdated, scene.InternalName, progress);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneLoadingProcessUpdated, scene.InternalName, progress);
         }
 
         private void OnSceneLoaded(string sceneName)
