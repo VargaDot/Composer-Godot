@@ -15,7 +15,8 @@ namespace ComposerLib
         private readonly Array<string> AllowedSettings = new(){
             "SceneParent",
             "InstantCreate",
-            "InstantLoad"
+            "InstantLoad",
+            "DisableProcessing"
         };
 
         public override void _Ready()
@@ -57,6 +58,16 @@ namespace ComposerLib
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
         {
             Composer.ReplaceScene(sceneToRemove, sceneToAdd, parent);
+        }
+
+        public void EnableScene(string name)
+        {
+            Composer.EnableScene(name);
+        }
+
+        public void DisableScene(string name)
+        {
+            Composer.DisableScene(name);
         }
 
         public void RemoveScene(string name)
@@ -109,6 +120,11 @@ namespace ComposerLib
                 case "InstantLoad":
                 {
                     settings.InstantLoad = (bool)dictSettings[key];
+                    break;
+                }
+                case "DisableProcessing":
+                {
+                    settings.DisableProcessing = (bool)dictSettings[key];
                     break;
                 }
             }

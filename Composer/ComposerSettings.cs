@@ -6,6 +6,7 @@ namespace ComposerLib
     public partial class CreateSettings: Resource
     {
         public Node SceneParent {get; set;} = null;
+        public bool DisableProcessing {get; set;} = false;
     }
 
     public partial class LoadSettings : CreateSettings

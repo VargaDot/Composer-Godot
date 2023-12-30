@@ -43,6 +43,28 @@ namespace ComposerLib
             EmitSignal(SignalName.FinishedCreating, InternalName);
         }
 
+        public void Enable()
+        {
+            if (Instance == null)
+            {
+                GD.PrintErr($"Enable error for scene {InternalName}: No instance exists.");
+                return;
+            }
+
+            Instance.ProcessMode = Node.ProcessModeEnum.Inherit;
+        }
+
+        public void Disable()
+        {
+            if (Instance == null)
+            {
+                GD.PrintErr($"Disable error for scene {InternalName}: No instance exists.");
+                return;
+            }
+
+            Instance.ProcessMode = Node.ProcessModeEnum.Disabled;
+        }
+
         public void Remove()
         {
             Instance?.QueueFree();

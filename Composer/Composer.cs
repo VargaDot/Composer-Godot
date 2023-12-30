@@ -69,7 +69,7 @@ namespace ComposerLib
             VerifyPostLoadSettings(name, settings);
         }
 
-        public void CreateScene(string name, CreateSettings settings = null)
+        public async void CreateScene(string name, CreateSettings settings = null)
         {
             settings ??= DefaultCreateSettings;
 
@@ -81,7 +81,10 @@ namespace ComposerLib
 
             VerifyPreCreateSettings(name, settings);
 
-            Scenes[name].Create(settings.SceneParent);
+            var scene = Scenes[name];
+            scene.Create(settings.SceneParent);
+
+            await ToSignal(scene, Scene.SignalName.FinishedCreating);
 
             VerifyPostCreateSettings(name, settings);
         }
@@ -92,6 +95,28 @@ namespace ComposerLib
             CreateScene(sceneToAdd, new CreateSettings{
                 SceneParent = parent
             });
+        }
+
+        public void EnableScene(string name)
+        {
+            if (!Scenes.ContainsKey(name))
+            {
+                GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
+                return;
+            }
+
+            Scenes[name].Enable();
+        }
+
+        public void DisableScene(string name)
+        {
+            if (!Scenes.ContainsKey(name))
+            {
+                GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
+                return;
+            }
+
+            Scenes[name].Disable();
         }
 
         public void RemoveScene(string name)
@@ -161,7 +186,10 @@ namespace ComposerLib
 
         private void VerifyPostCreateSettings(string name, CreateSettings settings)
         {
-
+            if (settings.DisableProcessing)
+            {
+                Scenes[name].Disable();
+            }
         }
 
         private void OnSceneCreated(string sceneName)
