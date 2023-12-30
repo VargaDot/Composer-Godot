@@ -47,6 +47,16 @@ namespace ComposerLib
             Composer.CreateScene(name, createSettings);
         }
 
+        public void RemoveScene(string name)
+        {
+            Composer.RemoveScene(name);
+        }
+
+        public void DisposeScene(string name)
+        {
+            Composer.DisposeScene(name);
+        }
+
         private ComposerSettings MatchSettings(Dictionary<string, Variant> dictSettings)
         {
             var set = CheckKeys(dictSettings);

@@ -3,7 +3,7 @@ using System;
 
 namespace ComposerLib
 {
-    public partial class Scene : Node
+    public partial class Scene : Resource
     {
         [Signal]
         public delegate void FinishedLoadingEventHandler(string sceneName);

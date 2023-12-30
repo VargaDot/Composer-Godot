@@ -96,6 +96,17 @@ namespace ComposerLib
             }
 
             Scenes[name].Remove();
+        }
+
+        public void DisposeScene(string name)
+        {
+            if (!Scenes.ContainsKey(name))
+            {
+                GD.PrintErr($"DisposeScene error: Scene {name} doesn't exist in memory.");
+                return;
+            }
+
+            Scenes[name].Dispose();
             Scenes.Remove(name);
         }
 
