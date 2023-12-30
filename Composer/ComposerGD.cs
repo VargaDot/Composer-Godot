@@ -5,6 +5,12 @@ namespace ComposerLib
 {
     public partial class ComposerGD: Node
     {
+        [Signal]
+        public delegate void SceneLoadedEventHandler(string sceneName);
+
+        [Signal]
+        public delegate void SceneCreatedEventHandler(string sceneName);
+
         private Composer Composer;
         private readonly Array<string> AllowedSettings = new(){
             "SceneParent",
@@ -15,6 +21,7 @@ namespace ComposerLib
         public override void _Ready()
         {
             Composer = GetNode<Composer>("/root/Composer");
+            Composer.ComposerGD = this;
         }
 
         public void AddScene(string name, string path, Dictionary<string, Variant> dictSettings = null)
@@ -47,6 +54,11 @@ namespace ComposerLib
             Composer.CreateScene(name, createSettings);
         }
 
+        public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
+        {
+            Composer.ReplaceScene(sceneToRemove, sceneToAdd, parent);
+        }
+
         public void RemoveScene(string name)
         {
             Composer.RemoveScene(name);
@@ -60,7 +72,6 @@ namespace ComposerLib
         private ComposerSettings MatchSettings(Dictionary<string, Variant> dictSettings)
         {
             var set = CheckKeys(dictSettings);
-
             return set;
         }
 

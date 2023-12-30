@@ -33,7 +33,7 @@ namespace ComposerLib
         {
             if (Resource == null)
             {
-                GD.PrintErr($"Create error for scene {Path}: Resource doesn't exist in memory.");
+                GD.PrintErr($"Create error for scene {InternalName}: Resource doesn't exist in memory.");
                 return;
             }
 

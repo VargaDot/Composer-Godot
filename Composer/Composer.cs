@@ -12,14 +12,13 @@ namespace ComposerLib
         public delegate void SceneCreatedEventHandler(string sceneName);
 
         public Godot.Collections.Dictionary<string, Scene> Scenes = new();
-
+        internal ComposerGD ComposerGD {get; set;} = null;
         private readonly CreateSettings DefaultCreateSettings = new(){SceneParent = ((SceneTree)Engine.GetMainLoop()).Root};
-
         private readonly Loader Loader = new();
 
         public override void _EnterTree()
         {
-            AddChild(Loader);
+            AddChild(Loader,true);
         }
 
         public Scene GetScene(string name)
@@ -87,6 +86,14 @@ namespace ComposerLib
             VerifyPostCreateSettings(name, settings);
         }
 
+        public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
+        {
+            RemoveScene(sceneToRemove);
+            CreateScene(sceneToAdd, new CreateSettings{
+                SceneParent = parent
+            });
+        }
+
         public void RemoveScene(string name)
         {
             if (!Scenes.ContainsKey(name))
@@ -117,15 +124,12 @@ namespace ComposerLib
 
         private void VerifyPostAddSettings(string name, AddSettings settings)
         {
-            if (settings.SceneParent != null)
+            if (settings.InstantLoad)
             {
-                if (settings.InstantLoad)
-                {
-                    LoadScene(name,new LoadSettings{
-                        SceneParent = settings.SceneParent,
-                        InstantCreate = settings.InstantCreate
-                    });
-                }
+                LoadScene(name,new LoadSettings{
+                    SceneParent = settings.SceneParent,
+                    InstantCreate = settings.InstantCreate
+                });
             }
         }
 
@@ -163,11 +167,13 @@ namespace ComposerLib
         private void OnSceneCreated(string sceneName)
         {
             EmitSignal(SignalName.SceneCreated, sceneName);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneCreated, sceneName);
         }
 
         private void OnSceneLoaded(string sceneName)
         {
             EmitSignal(SignalName.SceneLoaded, sceneName);
+            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneLoaded, sceneName);
         }
     }
 }
