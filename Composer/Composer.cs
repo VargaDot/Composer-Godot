@@ -44,18 +44,18 @@ namespace ComposerLib
 
         public Scene GetScene(string name)
         {
-            if (!Scenes.ContainsKey(name))
+            if (!Scenes.TryGetValue(name, out Scene scene))
             {
                 GD.PrintErr($"GetScene error: Scene {name} doesn't exist in memory.");
                 return null;
             }
 
-            return Scenes[name];
+            return scene;
         }
 
         public void AddScene(string name, string path, AddSettings settings = null)
         {
-            if (Scenes.ContainsKey(name))
+            if (GetScene(name) != null)
             {
                 GD.PrintErr($"AddScene error: Scene {name} already exists in memory.");
                 return;
@@ -74,7 +74,7 @@ namespace ComposerLib
 
         public async void LoadScene(string name, LoadSettings settings = null)
         {
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"LoadScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -97,7 +97,7 @@ namespace ComposerLib
         {
             settings ??= DefaultCreateSettings;
 
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"CreateScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -139,7 +139,7 @@ namespace ComposerLib
 
         public void EnableScene(string name)
         {
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -152,7 +152,7 @@ namespace ComposerLib
 
         public void DisableScene(string name)
         {
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -165,7 +165,7 @@ namespace ComposerLib
 
         public void RemoveScene(string name)
         {
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"RemoveScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -178,7 +178,7 @@ namespace ComposerLib
 
         public void DisposeScene(string name)
         {
-            if (!Scenes.ContainsKey(name))
+            if (GetScene(name) == null)
             {
                 GD.PrintErr($"DisposeScene error: Scene {name} doesn't exist in memory.");
                 return;
