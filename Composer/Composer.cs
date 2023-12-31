@@ -65,11 +65,11 @@ namespace ComposerLib
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
 
-            VerifyPreAddSettings(name, settings);
+            if (settings != null) VerifyPreAddSettings(name, settings);
 
             Scenes.Add(name,scene);
 
-            VerifyPostAddSettings(name, settings);
+            if (settings != null) VerifyPostAddSettings(name, settings);
         }
 
         public async void LoadScene(string name, LoadSettings settings = null)
@@ -80,14 +80,17 @@ namespace ComposerLib
                 return;
             }
 
-            VerifyPreLoadSettings(name, settings);
+            if (settings != null) VerifyPreLoadSettings(name, settings);
 
-            var scene = Scenes[name];
-            scene.Load();
+            var scene = GetScene(name);
+            if (settings != null)
+                scene.Load(settings.UseSubthreads, settings.CacheMode);
+            else
+                scene.Load();
 
             await ToSignal(scene,Scene.SignalName.FinishedLoading);
 
-            VerifyPostLoadSettings(name, settings);
+            if (settings != null) VerifyPostLoadSettings(name, settings);
         }
 
         public async void CreateScene(string name, CreateSettings settings = null)
@@ -100,20 +103,36 @@ namespace ComposerLib
                 return;
             }
 
-            VerifyPreCreateSettings(name, settings);
+            if (settings != null) VerifyPreCreateSettings(name, settings);
 
-            var scene = Scenes[name];
+            var scene = GetScene(name);
             scene.Create(settings.SceneParent);
 
             await ToSignal(scene, Scene.SignalName.FinishedCreating);
 
-            VerifyPostCreateSettings(name, settings);
+            if (settings != null) VerifyPostCreateSettings(name, settings);
         }
 
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
         {
             RemoveScene(sceneToRemove);
             CreateScene(sceneToAdd, new CreateSettings{
+                SceneParent = parent
+            });
+        }
+
+        public void ReloadScene(string name)
+        {
+            var scene = GetScene(name);
+            if (scene.Instance == null)
+            {
+                GD.PrintErr($"ReloadScene error: Scene {name} doesn't have an instance.");
+                return;
+            }
+
+            var parent = scene.Instance.GetParent();
+            RemoveScene(name);
+            CreateScene(name, new(){
                 SceneParent = parent
             });
         }
@@ -126,7 +145,7 @@ namespace ComposerLib
                 return;
             }
 
-            Scenes[name].Enable();
+            GetScene(name).Enable();
             EmitSignal(SignalName.SceneEnabled, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneEnabled, name);
         }
@@ -139,7 +158,7 @@ namespace ComposerLib
                 return;
             }
 
-            Scenes[name].Disable();
+            GetScene(name).Disable();
             EmitSignal(SignalName.SceneDisabled, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisabled, name);
         }
@@ -152,7 +171,7 @@ namespace ComposerLib
                 return;
             }
 
-            Scenes[name].Remove();
+            GetScene(name).Remove();
             EmitSignal(SignalName.SceneRemoved, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneRemoved, name);
         }
@@ -165,7 +184,7 @@ namespace ComposerLib
                 return;
             }
 
-            var scene = Scenes[name];
+            var scene = GetScene(name);
             scene.FinishedLoading -= OnSceneLoaded;
             scene.FinishedCreating -= OnSceneCreated;
             scene.Dispose();
@@ -221,7 +240,7 @@ namespace ComposerLib
         {
             if (settings.DisableProcessing)
             {
-                Scenes[name].Disable();
+                GetScene(name).Disable();
             }
         }
 

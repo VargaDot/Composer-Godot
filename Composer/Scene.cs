@@ -22,11 +22,15 @@ namespace ComposerLib
             Path = path;
         }
 
-        public void Load()
+        public void Load(bool UseSubthreads = false, ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse)
         {
             if (Resource != null) return;
 
-            Loader.AddToQueue(this);
+            Loader.AddToQueue(new LoaderScene(){
+                Scene = this,
+                UseSubthreads = UseSubthreads,
+                CacheMode = CacheMode
+            });
         }
 
         public void Create(Node parent)

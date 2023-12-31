@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 namespace ComposerLib
 {
+    internal class LoaderScene
+    {
+        public Scene Scene {get; set;}
+        public bool UseSubthreads {get; set;} = false;
+        public ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse;
+    }
+
     internal partial class Loader: Node
     {
         [Signal]
@@ -16,10 +23,10 @@ namespace ComposerLib
         [Signal]
         internal delegate void LoaderFinishedEventHandler(Scene scene, PackedScene resource=null);
 
-        private static Queue<Scene> SceneQueue = new();
-        private static Scene CurrentLoadedScene = null;
+        private static Queue<LoaderScene> SceneQueue = new();
+        private static LoaderScene CurrentLoadedObject = null;
 
-        internal static void AddToQueue(Scene scene)
+        internal static void AddToQueue(LoaderScene scene)
         {
             SceneQueue.Enqueue(scene);
         }
@@ -28,7 +35,7 @@ namespace ComposerLib
         {
             base._Process(delta);
 
-            if (CurrentLoadedScene == null)
+            if (CurrentLoadedObject == null)
             {
                 if (SceneQueue.Count > 0)
                 {
@@ -39,7 +46,7 @@ namespace ComposerLib
 
             Godot.Collections.Array progress = new();
 
-            switch (ResourceLoader.LoadThreadedGetStatus(CurrentLoadedScene.Path, progress))
+            switch (ResourceLoader.LoadThreadedGetStatus(CurrentLoadedObject.Scene.Path, progress))
             {
                 case ResourceLoader.ThreadLoadStatus.InProgress:
                 {
@@ -48,14 +55,14 @@ namespace ComposerLib
                 }
                 case ResourceLoader.ThreadLoadStatus.Loaded:
                 {
-                    var resource = (PackedScene)ResourceLoader.LoadThreadedGet(CurrentLoadedScene.Path);
-                    EmitSignal(SignalName.LoaderFinished, CurrentLoadedScene, resource);
+                    var resource = (PackedScene)ResourceLoader.LoadThreadedGet(CurrentLoadedObject.Scene.Path);
+                    EmitSignal(SignalName.LoaderFinished, CurrentLoadedObject.Scene, resource);
                     EndLoad();
                     break;
                 }
                 case ResourceLoader.ThreadLoadStatus.Failed: case ResourceLoader.ThreadLoadStatus.InvalidResource:
                 {
-                    EmitSignal(SignalName.LoaderFinished, CurrentLoadedScene);
+                    EmitSignal(SignalName.LoaderFinished, CurrentLoadedObject.Scene);
                     EndLoad();
                     break;
                 }
@@ -64,16 +71,16 @@ namespace ComposerLib
 
         private void BeginNewLoad()
         {
-            CurrentLoadedScene = SceneQueue.Dequeue();
-            LoaderFinished += CurrentLoadedScene.OnLoaded;
-            EmitSignal(SignalName.LoaderStarted, CurrentLoadedScene);
-            ResourceLoader.LoadThreadedRequest(CurrentLoadedScene.Path);
+            CurrentLoadedObject = SceneQueue.Dequeue();
+            LoaderFinished += CurrentLoadedObject.Scene.OnLoaded;
+            EmitSignal(SignalName.LoaderStarted, CurrentLoadedObject.Scene);
+            ResourceLoader.LoadThreadedRequest(CurrentLoadedObject.Scene.Path, "PackedScene", CurrentLoadedObject.UseSubthreads, CurrentLoadedObject.CacheMode);
         }
 
         private void EndLoad()
         {
-            LoaderFinished -= CurrentLoadedScene.OnLoaded;
-            CurrentLoadedScene = null;
+            LoaderFinished -= CurrentLoadedObject.Scene.OnLoaded;
+            CurrentLoadedObject = null;
         }
     }
 }

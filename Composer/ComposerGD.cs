@@ -35,7 +35,9 @@ namespace ComposerLib
             "SceneParent",
             "InstantCreate",
             "InstantLoad",
-            "DisableProcessing"
+            "DisableProcessing",
+            "UseSubthreads",
+            "CacheMode",
         };
 
         public override void _Ready()
@@ -44,6 +46,10 @@ namespace ComposerLib
             Composer.ComposerGD = this;
         }
 
+        public Scene GetScene(string name)
+        {
+            return Composer.GetScene(name);
+        }
         public void AddScene(string name, string path, Dictionary<string, Variant> dictSettings = null)
         {
             AddSettings addSettings = new();
@@ -77,6 +83,11 @@ namespace ComposerLib
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
         {
             Composer.ReplaceScene(sceneToRemove, sceneToAdd, parent);
+        }
+
+        public void ReloadScene(string name)
+        {
+            Composer.ReloadScene(name);
         }
 
         public void EnableScene(string name)
@@ -144,6 +155,16 @@ namespace ComposerLib
                 case "DisableProcessing":
                 {
                     settings.DisableProcessing = (bool)dictSettings[key];
+                    break;
+                }
+                case "UseSubthreads":
+                {
+                    settings.UseSubthreads = (bool)dictSettings[key];
+                    break;
+                }
+                case "CacheMode":
+                {
+                    settings.CacheMode = (ResourceLoader.CacheMode)(int)dictSettings[key];
                     break;
                 }
             }

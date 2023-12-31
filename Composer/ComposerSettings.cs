@@ -12,6 +12,8 @@ namespace ComposerLib
     public partial class LoadSettings : CreateSettings
     {
         public bool InstantCreate {get; set;} = false;
+        public bool UseSubthreads {get; set;} = false;
+        public ResourceLoader.CacheMode CacheMode {get; set;} = ResourceLoader.CacheMode.Reuse;
     }
 
     public partial class AddSettings : LoadSettings
