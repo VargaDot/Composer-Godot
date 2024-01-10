@@ -3,7 +3,7 @@ using Godot.Collections;
 
 namespace ComposerLib
 {
-    public partial class ComposerGD: Node
+    public partial class ComposerGD : Node
     {
         [Signal]
         public delegate void SceneBeganLoadingEventHandler(string sceneName);

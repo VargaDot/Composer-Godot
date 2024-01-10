@@ -10,7 +10,7 @@ namespace ComposerLib
         public ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse;
     }
 
-    internal partial class Loader: Node
+    internal partial class Loader : Node
     {
         [Signal]
         internal delegate void LoaderStartedEventHandler(Scene scene);
