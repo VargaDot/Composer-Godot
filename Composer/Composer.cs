@@ -55,7 +55,7 @@ namespace ComposerLib
 
         public void AddScene(string name, string path, AddSettings settings = null)
         {
-            if (GetScene(name) != null)
+            if (Scenes.ContainsKey(name))
             {
                 GD.PrintErr($"AddScene error: Scene {name} already exists in memory.");
                 return;
