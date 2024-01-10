@@ -24,6 +24,11 @@ Composer="*res://Composer/Composer.cs"
 
 project/assembly_name="NewComposer"
 
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
