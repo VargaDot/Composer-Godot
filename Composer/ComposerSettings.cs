@@ -2,7 +2,7 @@ using Godot;
 
 namespace ComposerLib
 {
-    public partial class CreateSettings: Resource
+    public partial class CreateSettings : Resource
     {
         public Node SceneParent {get; set;} = null;
         public bool DisableProcessing {get; set;} = false;
@@ -20,7 +20,7 @@ namespace ComposerLib
         public bool InstantLoad {get; set;} = false;
     }
 
-    public partial class ComposerSettings: AddSettings
+    public partial class ComposerSettings : AddSettings
     {
 
     }
