@@ -60,6 +60,26 @@ namespace ComposerLib
             Composer.AddScene(name, path, addSettings);
         }
 
+        public void AddScene(string name, PackedScene resource, Dictionary<string, Variant> dictSettings = null, string path = "")
+        {
+            AddSettings addSettings = new();
+
+            if (dictSettings != null)
+                addSettings = MatchSettings(dictSettings);
+
+            Composer.AddScene(name, resource, addSettings, path);
+        }
+
+        public void AddScene(Scene scene, Dictionary<string, Variant> dictSettings = null)
+        {
+            AddSettings addSettings = new();
+
+            if (dictSettings != null)
+                addSettings = MatchSettings(dictSettings);
+
+            Composer.AddScene(scene, addSettings);
+        }
+
         public void LoadScene(string name, Dictionary<string, Variant> dictSettings = null)
         {
             LoadSettings loadSettings = new();

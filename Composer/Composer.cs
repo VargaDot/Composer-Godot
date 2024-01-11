@@ -72,9 +72,48 @@ namespace ComposerLib
             if (settings != null) VerifyPostAddSettings(name, settings);
         }
 
+        public void AddScene(string name, PackedScene resource, AddSettings settings = null, string path = "")
+        {
+            if (Scenes.ContainsKey(name))
+            {
+                GD.PrintErr($"AddScene error: Scene {name} already exists in memory.");
+                return;
+            }
+
+            var scene = new Scene(name, resource, path);
+            scene.FinishedLoading += OnSceneLoaded;
+            scene.FinishedCreating += OnSceneCreated;
+
+            if (settings != null) VerifyPreAddSettings(name, settings);
+
+            Scenes.Add(name,scene);
+
+            if (settings != null) VerifyPostAddSettings(name, settings);
+        }
+
+        public void AddScene(Scene scene, AddSettings settings = null)
+        {
+            if (Scenes.ContainsKey(scene.InternalName))
+            {
+                GD.PrintErr($"AddScene error: Scene {scene.InternalName} already exists in memory.");
+                return;
+            }
+
+            scene.FinishedLoading += OnSceneLoaded;
+            scene.FinishedCreating += OnSceneCreated;
+
+            if (settings != null) VerifyPreAddSettings(scene.InternalName, settings);
+
+            Scenes.Add(scene.InternalName,scene);
+
+            if (settings != null) VerifyPostAddSettings(scene.InternalName, settings);
+        }
+
         public async void LoadScene(string name, LoadSettings settings = null)
         {
-            if (GetScene(name) == null)
+            var scene = GetScene(name);
+
+            if (scene == null)
             {
                 GD.PrintErr($"LoadScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -82,7 +121,6 @@ namespace ComposerLib
 
             if (settings != null) VerifyPreLoadSettings(name, settings);
 
-            var scene = GetScene(name);
             if (settings != null)
                 scene.Load(settings.UseSubthreads, settings.CacheMode);
             else
@@ -96,8 +134,9 @@ namespace ComposerLib
         public async void CreateScene(string name, CreateSettings settings = null)
         {
             settings ??= DefaultCreateSettings;
+            var scene = GetScene(name);
 
-            if (GetScene(name) == null)
+            if (scene == null)
             {
                 GD.PrintErr($"CreateScene error: Scene {name} doesn't exist in memory.");
                 return;
@@ -105,7 +144,6 @@ namespace ComposerLib
 
             if (settings != null) VerifyPreCreateSettings(name, settings);
 
-            var scene = GetScene(name);
             scene.Create(settings.SceneParent);
 
             await ToSignal(scene, Scene.SignalName.FinishedCreating);
@@ -124,6 +162,7 @@ namespace ComposerLib
         public void ReloadScene(string name)
         {
             var scene = GetScene(name);
+
             if (scene.Instance == null)
             {
                 GD.PrintErr($"ReloadScene error: Scene {name} doesn't have an instance.");
@@ -139,52 +178,59 @@ namespace ComposerLib
 
         public void EnableScene(string name)
         {
-            if (GetScene(name) == null)
+            var scene = GetScene(name);
+
+            if (scene == null)
             {
                 GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
                 return;
             }
 
-            GetScene(name).Enable();
+            scene.Enable();
             EmitSignal(SignalName.SceneEnabled, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneEnabled, name);
         }
 
         public void DisableScene(string name)
         {
-            if (GetScene(name) == null)
+            var scene = GetScene(name);
+
+            if (scene == null)
             {
                 GD.PrintErr($"EnableScene error: Scene {name} doesn't exist in memory.");
                 return;
             }
 
-            GetScene(name).Disable();
+            scene.Disable();
             EmitSignal(SignalName.SceneDisabled, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisabled, name);
         }
 
         public void RemoveScene(string name)
         {
-            if (GetScene(name) == null)
+            var scene = GetScene(name);
+
+            if (scene == null)
             {
                 GD.PrintErr($"RemoveScene error: Scene {name} doesn't exist in memory.");
                 return;
             }
 
-            GetScene(name).Remove();
+            scene.Remove();
             EmitSignal(SignalName.SceneRemoved, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneRemoved, name);
         }
 
         public void DisposeScene(string name)
         {
-            if (GetScene(name) == null)
+            var scene = GetScene(name);
+
+            if (scene == null)
             {
                 GD.PrintErr($"DisposeScene error: Scene {name} doesn't exist in memory.");
                 return;
             }
 
-            var scene = GetScene(name);
             scene.FinishedLoading -= OnSceneLoaded;
             scene.FinishedCreating -= OnSceneCreated;
             scene.Dispose();

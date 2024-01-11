@@ -10,8 +10,11 @@ namespace ComposerLib
         [Signal]
         public delegate void FinishedCreatingEventHandler(string sceneName);
 
+        [Export]
         public string InternalName {get; private set;}
+        [Export]
         public string Path {get; set;}
+        [Export]
         public PackedScene Resource {get; set;} = null;
         public Node Instance {get; private set;} = null;
 
@@ -21,9 +24,16 @@ namespace ComposerLib
             Path = path;
         }
 
+        public Scene(string internalName, PackedScene resource, string path = "")
+        {
+            InternalName = internalName;
+            Resource = resource;
+            Path = path;
+        }
+
         public void Load(bool UseSubthreads = false, ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse)
         {
-            if (Resource != null) return;
+            if (Resource != null || Path == "") return;
 
             Loader.AddToQueue(new LoaderScene(){
                 Scene = this,
