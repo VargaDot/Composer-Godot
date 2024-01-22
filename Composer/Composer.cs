@@ -118,11 +118,12 @@ namespace ComposerLib
                 return;
             }
 
-            if (settings != null) VerifyPreLoadSettings(name, settings);
-
-            if (settings != null)
+            if (settings != null) 
+            { 
+                VerifyPreLoadSettings(name, settings);
                 scene.Load(settings.UseSubthreads, settings.CacheMode);
-            else
+            }
+            else 
                 scene.Load();
 
             await ToSignal(scene,Scene.SignalName.FinishedLoading);
@@ -141,13 +142,13 @@ namespace ComposerLib
                 return;
             }
 
-            if (settings != null) VerifyPreCreateSettings(name, settings);
+            VerifyPreCreateSettings(name, settings);
 
             scene.Create(settings.SceneParent);
 
             await ToSignal(scene, Scene.SignalName.FinishedCreating);
 
-            if (settings != null) VerifyPostCreateSettings(name, settings);
+            VerifyPostCreateSettings(name, settings);
         }
 
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node parent)
@@ -284,9 +285,7 @@ namespace ComposerLib
         private void VerifyPostCreateSettings(string name, CreateSettings settings)
         {
             if (settings.DisableProcessing)
-            {
                 GetScene(name).Disable();
-            }
         }
 
         private void OnSceneCreated(string sceneName)
