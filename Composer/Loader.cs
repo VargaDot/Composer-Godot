@@ -31,8 +31,6 @@ namespace ComposerLib
 
         public override void _Process(double delta)
         {
-            base._Process(delta);
-
             if (CurrentLoadedObject == null)
             {
                 if (SceneQueue.Count > 0)
