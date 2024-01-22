@@ -146,9 +146,7 @@ namespace ComposerLib
                 var cleanedKey = CleanKey(key);
 
                 if (AllowedSettings.Contains(cleanedKey))
-                {
                     MatchKey(cleanedKey, key, dictSettings, ref settings);
-                }
             }
 
             return settings;
