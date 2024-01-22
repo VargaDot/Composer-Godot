@@ -32,7 +32,6 @@ namespace ComposerLib
 
         public Godot.Collections.Dictionary<string, Scene> Scenes = new();
         internal ComposerGD ComposerGD {get; set;} = null;
-        private readonly CreateSettings DefaultCreateSettings = new(){SceneParent = ((SceneTree)Engine.GetMainLoop()).Root};
         private readonly Loader Loader = new();
 
         public override void _EnterTree()
@@ -133,7 +132,7 @@ namespace ComposerLib
 
         public async void CreateScene(string name, CreateSettings settings = null)
         {
-            settings ??= DefaultCreateSettings;
+            settings ??= new();
             var scene = GetScene(name);
 
             if (scene == null)
