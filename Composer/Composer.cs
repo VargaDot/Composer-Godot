@@ -36,7 +36,7 @@ namespace ComposerLib
 
         public override void _EnterTree()
         {
-            AddChild(Loader,true);
+            AddChild(Loader, true);
             Loader.LoaderStarted += OnSceneBeganLoading;
             Loader.LoaderLoadingUpdated += OnLoadingUpdated;
         }
@@ -66,7 +66,7 @@ namespace ComposerLib
 
             if (settings != null) VerifyPreAddSettings(name, settings);
 
-            Scenes.Add(name,scene);
+            Scenes.Add(name, scene);
 
             if (settings != null) VerifyPostAddSettings(name, settings);
         }
@@ -85,7 +85,7 @@ namespace ComposerLib
 
             if (settings != null) VerifyPreAddSettings(name, settings);
 
-            Scenes.Add(name,scene);
+            Scenes.Add(name, scene);
 
             if (settings != null) VerifyPostAddSettings(name, settings);
         }
@@ -103,7 +103,7 @@ namespace ComposerLib
 
             if (settings != null) VerifyPreAddSettings(scene.InternalName, settings);
 
-            Scenes.Add(scene.InternalName,scene);
+            Scenes.Add(scene.InternalName, scene);
 
             if (settings != null) VerifyPostAddSettings(scene.InternalName, settings);
         }
@@ -249,7 +249,7 @@ namespace ComposerLib
         {
             if (settings.InstantLoad)
             {
-                LoadScene(name,new LoadSettings{
+                LoadScene(name, new LoadSettings{
                     SceneParent = settings.SceneParent,
                     InstantCreate = settings.InstantCreate
                 });
@@ -267,7 +267,7 @@ namespace ComposerLib
             {
                 if (settings.InstantCreate)
                 {
-                    CreateScene(name,new CreateSettings{
+                    CreateScene(name, new CreateSettings{
                         SceneParent = settings.SceneParent
                     });
                 }
