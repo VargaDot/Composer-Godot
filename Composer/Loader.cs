@@ -21,6 +21,9 @@ namespace ComposerLib
         [Signal]
         internal delegate void LoaderFinishedEventHandler(Scene scene, PackedScene resource=null);
 
+        [Signal]
+        internal delegate void LoaderAllFinishedEventHandler();
+
         private static Queue<LoaderScene> SceneQueue = new();
         private static LoaderScene CurrentLoadedObject = null;
 
@@ -77,6 +80,11 @@ namespace ComposerLib
         {
             LoaderFinished -= CurrentLoadedObject.Scene.OnLoaded;
             CurrentLoadedObject = null;
+
+            if (SceneQueue.Count == 0)
+            {
+                EmitSignal(SignalName.LoaderAllFinished);
+            }
         }
     }
 }

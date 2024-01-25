@@ -6,3 +6,9 @@ func _ready():
 		"instant_create":true,
 		"scene_parent":self
 	})
+
+	await ComposerGD.SceneLoaded
+	print("Scene MainMenu has been loaded.")
+
+	await ComposerGD.SceneCreated
+	print("Scene MainMenu has been created.")

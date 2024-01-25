@@ -2,26 +2,24 @@ using Godot;
 
 namespace ComposerLib
 {
-    public partial class CreateSettings : Resource
+    public partial class SceneSettings: Resource
     {
-        public Node SceneParent {get; set;} = ((SceneTree)Engine.GetMainLoop()).Root;
-        public bool DisableProcessing {get; set;} = false;
-    }
+        private Node _sceneParent = ((SceneTree)Engine.GetMainLoop()).Root;
+        public Node SceneParent {
+            get => _sceneParent;
+            set
+            {
+                if (IsInstanceValid(value))
+                    _sceneParent = value;
+                else
+                    GD.PrintErr($"Node {value} is invalid parent.");
+            }
+        }
 
-    public partial class LoadSettings : CreateSettings
-    {
+        public bool DisableProcessing {get; set;} = false;
         public bool InstantCreate {get; set;} = false;
         public bool UseSubthreads {get; set;} = false;
         public ResourceLoader.CacheMode CacheMode {get; set;} = ResourceLoader.CacheMode.Reuse;
-    }
-
-    public partial class AddSettings : LoadSettings
-    {
         public bool InstantLoad {get; set;} = false;
-    }
-
-    public partial class ComposerSettings : AddSettings
-    {
-
     }
 }
