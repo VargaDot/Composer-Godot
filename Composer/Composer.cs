@@ -131,7 +131,7 @@ namespace ComposerLib
         public async void ReloadScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"ReloadScene")) return;
+            if (!CheckForNull(scene, "ReloadScene")) return;
 
             RemoveScene(name);
 
