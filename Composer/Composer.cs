@@ -153,7 +153,7 @@ namespace ComposerLib
         public void DisableScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"DisableScene")) return;
+            if (!CheckForNull(scene, "DisableScene")) return;
 
             scene.Disable();
             EmitSignal(SignalName.SceneDisabled, name);
