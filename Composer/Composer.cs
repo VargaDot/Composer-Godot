@@ -143,7 +143,7 @@ namespace ComposerLib
         public void EnableScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"EnableScene")) return;
+            if (!CheckForNull(scene, "EnableScene")) return;
 
             scene.Enable();
             EmitSignal(SignalName.SceneEnabled, name);
