@@ -24,8 +24,19 @@ namespace ComposerLib
         [Signal]
         internal delegate void LoaderAllFinishedEventHandler();
 
+        internal bool IsWorking {
+            get
+            {
+                return ProcessMode == ProcessModeEnum.Inherit;
+            }
+        }
         private static Queue<LoaderScene> SceneQueue = new();
         private static LoaderScene CurrentLoadedObject = null;
+
+        public override void _EnterTree()
+        {
+            Disable();
+        }
 
         internal static void AddToQueue(LoaderScene scene)
         {
@@ -45,7 +56,7 @@ namespace ComposerLib
 
             Godot.Collections.Array progress = new();
 
-            switch (ResourceLoader.LoadThreadedGetStatus(CurrentLoadedObject.Scene.Path, progress))
+            switch (ResourceLoader.LoadThreadedGetStatus(CurrentLoadedObject.Scene.PathToResource, progress))
             {
                 case ResourceLoader.ThreadLoadStatus.InProgress:
                 {
@@ -54,7 +65,7 @@ namespace ComposerLib
                 }
                 case ResourceLoader.ThreadLoadStatus.Loaded:
                 {
-                    var resource = (PackedScene)ResourceLoader.LoadThreadedGet(CurrentLoadedObject.Scene.Path);
+                    var resource = (PackedScene)ResourceLoader.LoadThreadedGet(CurrentLoadedObject.Scene.PathToResource);
                     EmitSignal(SignalName.LoaderFinished, CurrentLoadedObject.Scene, resource);
                     EndLoad();
                     break;
@@ -68,12 +79,28 @@ namespace ComposerLib
             }
         }
 
+        internal void Enable()
+        {
+            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Inherit);
+        }
+
+        internal void Disable()
+        {
+            if (CurrentLoadedObject != null)
+            {
+                GD.PrintErr("Cannot disable Loader when loading an object.");
+                return;
+            }
+
+            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Disabled);
+        }
+
         private void BeginNewLoad()
         {
             CurrentLoadedObject = SceneQueue.Dequeue();
             LoaderFinished += CurrentLoadedObject.Scene.OnLoaded;
             EmitSignal(SignalName.LoaderStarted, CurrentLoadedObject.Scene);
-            ResourceLoader.LoadThreadedRequest(CurrentLoadedObject.Scene.Path, "PackedScene", CurrentLoadedObject.UseSubthreads, CurrentLoadedObject.CacheMode);
+            ResourceLoader.LoadThreadedRequest(CurrentLoadedObject.Scene.PathToResource, "PackedScene", CurrentLoadedObject.UseSubthreads, CurrentLoadedObject.CacheMode);
         }
 
         private void EndLoad()

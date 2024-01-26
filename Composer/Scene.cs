@@ -2,6 +2,7 @@ using Godot;
 
 namespace ComposerLib
 {
+    [GlobalClass]
     public partial class Scene : Resource
     {
         [Signal]
@@ -10,19 +11,25 @@ namespace ComposerLib
         [Signal]
         public delegate void FinishedCreatingEventHandler(string sceneName);
 
+
         [Export]
         public string InternalName {get; private set;}
-        [Export]
-        public string Path {get; set;}
+
+        [Export(PropertyHint.File,"*.tscn")]
+        public string PathToResource {get; set;}
+
         [Export]
         public PackedScene Resource {get; set;} = null;
-        public Node Instance {get; private set;} = null;
+
+        [Export]
         public SceneSettings Settings {get; set;} = null;
+
+        public Node Instance {get; private set;} = null;
 
         public Scene(string internalName, string path, SceneSettings settings = null)
         {
             InternalName = internalName;
-            Path = path;
+            PathToResource = path;
             Settings = settings ?? new();
 
             if (settings.InstantLoad)
@@ -33,7 +40,7 @@ namespace ComposerLib
         {
             InternalName = internalName;
             Resource = resource;
-            Path = path;
+            PathToResource = path;
             Settings = settings ?? new();
 
             if (settings.InstantLoad)
@@ -42,7 +49,7 @@ namespace ComposerLib
 
         public async void Load()
         {
-            if (Resource != null || Path == "") return;
+            if (Resource != null || PathToResource == "") return;
 
             Loader.AddToQueue(new LoaderScene(){
                 Scene = this,

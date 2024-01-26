@@ -33,9 +33,9 @@ namespace ComposerLib
         public delegate void SceneDisposedEventHandler(string sceneName);
 
 
-        public Godot.Collections.Dictionary<string, Scene> Scenes = new();
         internal ComposerGD ComposerGD {get; set;} = null;
         private readonly Loader Loader = new();
+        private Godot.Collections.Dictionary<string, Scene> SceneManifest = new();
 
         public override void _EnterTree()
         {
@@ -47,7 +47,7 @@ namespace ComposerLib
 
         public Scene GetScene(string name)
         {
-            if (!Scenes.TryGetValue(name, out Scene scene))
+            if (!SceneManifest.TryGetValue(name, out Scene scene))
             {
                 GD.PrintErr($"GetScene error: Scene {name} doesn't exist in memory.");
                 return null;
@@ -61,12 +61,13 @@ namespace ComposerLib
             if (!CheckIfExists(name)) return;
 
             settings ??= new();
+            if (settings.InstantLoad) Loader.Enable();
 
             var scene = new Scene(name, path, settings);
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
 
-            Scenes.Add(name, scene);
+            SceneManifest.Add(name, scene);
         }
 
         public void AddScene(string name, PackedScene resource, string path = "", SceneSettings settings = null)
@@ -74,12 +75,14 @@ namespace ComposerLib
             if (!CheckIfExists(name)) return;
 
             settings ??= new();
+            if (settings.InstantLoad) Loader.Enable();
 
             var scene = new Scene(name, resource, path, settings);
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
 
-            Scenes.Add(name, scene);
+
+            SceneManifest.Add(name, scene);
         }
 
         public void AddScene(Scene scene)
@@ -89,29 +92,42 @@ namespace ComposerLib
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
 
-            Scenes.Add(scene.InternalName, scene);
+            SceneManifest.Add(scene.InternalName, scene);
         }
 
-        public void AddScenes(Godot.Collections.Array<Scene> scenes)
+        public void AddScenes(Godot.Collections.Array<Scene> scenes, bool autoLoad = false)
         {
             foreach (Scene scene in scenes)
             {
                 AddScene(scene);
             }
+
+            if (autoLoad) LoadAllScenes();
         }
 
         public void LoadScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"LoadScene")) return;
+            if (!CheckForNull(scene, "LoadScene")) return;
 
+            Loader.Enable();
             scene.Load();
+        }
+
+        public void LoadAllScenes()
+        {
+            Loader.Enable();
+
+            foreach (Scene scene in SceneManifest.Values)
+            {
+                scene.Load();
+            }
         }
 
         public void CreateScene(string name, Node newParent = null)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"CreateScene")) return;
+            if (!CheckForNull(scene, "CreateScene")) return;
 
             if (newParent != null)
                 scene.Settings.SceneParent = newParent;
@@ -131,7 +147,7 @@ namespace ComposerLib
         public async void ReloadScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"ReloadScene")) return;
+            if (!CheckForNull(scene, "ReloadScene")) return;
 
             RemoveScene(name);
 
@@ -143,7 +159,7 @@ namespace ComposerLib
         public void EnableScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"EnableScene")) return;
+            if (!CheckForNull(scene, "EnableScene")) return;
 
             scene.Enable();
             EmitSignal(SignalName.SceneEnabled, name);
@@ -153,7 +169,7 @@ namespace ComposerLib
         public void DisableScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"DisableScene")) return;
+            if (!CheckForNull(scene, "DisableScene")) return;
 
             scene.Disable();
             EmitSignal(SignalName.SceneDisabled, name);
@@ -163,7 +179,7 @@ namespace ComposerLib
         public void RemoveScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"RemoveScene")) return;
+            if (!CheckForNull(scene, "RemoveScene")) return;
 
             scene.Remove();
             EmitSignal(SignalName.SceneRemoved, name);
@@ -173,12 +189,12 @@ namespace ComposerLib
         public void DisposeScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"DisposeScene")) return;
+            if (!CheckForNull(scene, "DisposeScene")) return;
 
             scene.FinishedLoading -= OnSceneLoaded;
             scene.FinishedCreating -= OnSceneCreated;
             scene.Dispose();
-            Scenes.Remove(name);
+            SceneManifest.Remove(name);
 
             EmitSignal(SignalName.SceneDisposed, name);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisposed, name);
@@ -186,7 +202,7 @@ namespace ComposerLib
 
         private bool CheckIfExists(string name)
         {
-            if (Scenes.ContainsKey(name))
+            if (SceneManifest.ContainsKey(name))
             {
                 GD.PrintErr($"AddScene error: Scene {name} already exists in memory.");
                 return false;
@@ -226,6 +242,8 @@ namespace ComposerLib
 
         private void OnLoadingAllFinished()
         {
+            Loader.Disable();
+
             EmitSignal(SignalName.ScenesAllLoaded);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.ScenesAllLoaded);
         }
