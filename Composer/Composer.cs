@@ -111,7 +111,7 @@ namespace ComposerLib
         public void CreateScene(string name, Node newParent = null)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"CreateScene")) return;
+            if (!CheckForNull(scene, "CreateScene")) return;
 
             if (newParent != null)
                 scene.Settings.SceneParent = newParent;
