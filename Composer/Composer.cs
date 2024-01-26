@@ -103,7 +103,7 @@ namespace ComposerLib
         public void LoadScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"LoadScene")) return;
+            if (!CheckForNull(scene, "LoadScene")) return;
 
             scene.Load();
         }
