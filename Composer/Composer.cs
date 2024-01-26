@@ -163,7 +163,7 @@ namespace ComposerLib
         public void RemoveScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"RemoveScene")) return;
+            if (!CheckForNull(scene, "RemoveScene")) return;
 
             scene.Remove();
             EmitSignal(SignalName.SceneRemoved, name);
