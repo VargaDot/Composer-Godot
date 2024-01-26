@@ -173,7 +173,7 @@ namespace ComposerLib
         public void DisposeScene(string name)
         {
             var scene = GetScene(name);
-            if (!CheckForNull(scene,"DisposeScene")) return;
+            if (!CheckForNull(scene, "DisposeScene")) return;
 
             scene.FinishedLoading -= OnSceneLoaded;
             scene.FinishedCreating -= OnSceneCreated;
