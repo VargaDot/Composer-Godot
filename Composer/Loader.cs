@@ -5,9 +5,9 @@ namespace ComposerLib
 {
     internal class LoaderScene
     {
-        public Scene Scene {get; set;}
-        public bool UseSubthreads {get; set;} = false;
-        public ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse;
+        internal Scene Scene {get; set;}
+        internal bool UseSubthreads {get; set;} = false;
+        internal ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse;
     }
 
     internal partial class Loader : Node
@@ -24,6 +24,7 @@ namespace ComposerLib
         [Signal]
         internal delegate void LoaderAllFinishedEventHandler();
 
+        internal Composer Composer;
         internal bool IsWorking {
             get
             {

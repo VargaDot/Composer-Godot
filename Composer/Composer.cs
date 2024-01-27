@@ -40,6 +40,7 @@ namespace ComposerLib
         public override void _EnterTree()
         {
             AddChild(Loader, true);
+            Loader.Name = "Loader";
             Loader.LoaderStarted += OnSceneBeganLoading;
             Loader.LoaderLoadingUpdated += OnLoadingUpdated;
             Loader.LoaderAllFinished += OnLoadingAllFinished;
@@ -60,9 +61,6 @@ namespace ComposerLib
         {
             if (!CheckIfExists(name)) return;
 
-            settings ??= new();
-            if (settings.InstantLoad) Loader.Enable();
-
             var scene = new Scene(name, path, settings);
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
@@ -74,13 +72,9 @@ namespace ComposerLib
         {
             if (!CheckIfExists(name)) return;
 
-            settings ??= new();
-            if (settings.InstantLoad) Loader.Enable();
-
             var scene = new Scene(name, resource, path, settings);
             scene.FinishedLoading += OnSceneLoaded;
             scene.FinishedCreating += OnSceneCreated;
-
 
             SceneManifest.Add(name, scene);
         }
@@ -102,7 +96,7 @@ namespace ComposerLib
                 AddScene(scene);
             }
 
-            if (autoLoad) LoadAllScenes();
+            if (autoLoad) LoadScenes(scenes);
         }
 
         public void LoadScene(string name)
@@ -110,15 +104,12 @@ namespace ComposerLib
             var scene = GetScene(name);
             if (!CheckForNull(scene, "LoadScene")) return;
 
-            Loader.Enable();
             scene.Load();
         }
 
-        public void LoadAllScenes()
+        public void LoadScenes(Godot.Collections.Array<Scene> scenes)
         {
-            Loader.Enable();
-
-            foreach (Scene scene in SceneManifest.Values)
+            foreach (Scene scene in scenes)
             {
                 scene.Load();
             }
@@ -133,6 +124,14 @@ namespace ComposerLib
                 scene.Settings.SceneParent = newParent;
 
             scene.Create();
+        }
+
+        public void CreateScenes(Godot.Collections.Array<Scene> scenes)
+        {
+            foreach (Scene scene in scenes)
+            {
+                scene.Create();
+            }
         }
 
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node newParent = null)
@@ -252,6 +251,11 @@ namespace ComposerLib
         {
             EmitSignal(SignalName.SceneLoaded, sceneName);
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneLoaded, sceneName);
+        }
+
+        private void OnLoaderEnableRequested()
+        {
+            Loader.Enable();
         }
     }
 }

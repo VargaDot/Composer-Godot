@@ -11,7 +11,6 @@ namespace ComposerLib
         [Signal]
         public delegate void FinishedCreatingEventHandler(string sceneName);
 
-
         [Export]
         public string InternalName {get; private set;}
 
@@ -26,11 +25,15 @@ namespace ComposerLib
 
         public Node Instance {get; private set;} = null;
 
+        internal Loader Loader;
+
         public Scene(string internalName, string path, SceneSettings settings = null)
         {
             InternalName = internalName;
             PathToResource = path;
             Settings = settings ?? new();
+
+            GetLoader();
 
             if (settings.InstantLoad)
                 Load();
@@ -43,19 +46,23 @@ namespace ComposerLib
             PathToResource = path;
             Settings = settings ?? new();
 
+            GetLoader();
+
             if (settings.InstantLoad)
                 Load();
         }
 
         public async void Load()
         {
-            if (Resource != null || PathToResource == "") return;
+            if (Resource != null || PathToResource == "" || Loader == null) return;
 
             Loader.AddToQueue(new LoaderScene(){
                 Scene = this,
                 UseSubthreads = Settings.UseSubthreads,
-                CacheMode = Settings.CacheMode
+                CacheMode = Settings.CacheMode,
             });
+
+            Loader.Enable();
 
             if (Settings.InstantCreate)
             {
@@ -124,6 +131,15 @@ namespace ComposerLib
             {
                 Resource = resource;
                 EmitSignal(SignalName.FinishedLoading, InternalName);
+            }
+        }
+
+        private void GetLoader()
+        {
+            Loader = ((SceneTree)Engine.GetMainLoop()).Root.GetNodeOrNull<Loader>("Composer/Loader");
+            if (Loader == null)
+            {
+                GD.PrintErr($"Couldn't access Loader for scene {InternalName}. Load method will not work.");
             }
         }
     }
