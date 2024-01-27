@@ -5,17 +5,20 @@ namespace ComposerLib
     [GlobalClass]
     public partial class SceneSettings: Resource
     {
-        public Node DefaultParent {
-            get => _defaultParent;
+        public Node SceneParent {
+            get => _sceneParent;
             set
             {
                 if (IsInstanceValid(value))
-                    _defaultParent = value;
+                    _sceneParent = value;
                 else
-                    GD.PrintErr($"Node {value} is invalid parent.");
+                {
+                    GD.PrintErr($"Node {value} is invalid parent. SceneParent is now Root.");
+                    _sceneParent = ((SceneTree)Engine.GetMainLoop()).Root;
+                }
             }
         }
-        private Node _defaultParent = ((SceneTree)Engine.GetMainLoop()).Root;
+        private Node _sceneParent = ((SceneTree)Engine.GetMainLoop()).Root;
 
         [Export]
         public bool InstantLoad {get; set;} = false;

@@ -80,7 +80,7 @@ namespace ComposerLib
             }
 
             Instance = Resource.Instantiate();
-            Settings.DefaultParent.AddChild(Instance);
+            Settings.SceneParent.AddChild(Instance);
 
             if (Settings.DisableProcessing)
                 Disable();
