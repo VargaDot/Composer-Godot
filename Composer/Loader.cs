@@ -81,7 +81,7 @@ namespace ComposerLib
 
         internal void Enable()
         {
-            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Inherit);
+            SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Inherit);
         }
 
         internal void Disable()
