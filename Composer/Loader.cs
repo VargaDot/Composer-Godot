@@ -82,18 +82,19 @@ namespace ComposerLib
 
         internal void Enable()
         {
-            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Inherit);
+            SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Inherit);
         }
 
         internal void Disable()
         {
             if (CurrentLoadedObject != null)
             {
-                GD.PrintErr("Cannot disable Loader when loading an object.");
-                return;
+                GD.Print("Loader is loading an object, awaiting process to end...");
+                await ToSignal(this, SignalName.LoaderFinished);
+                GD.Print("Object Loaded, proceeding to disable...");
             }
 
-            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Disabled);
+            SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Disabled);
         }
 
         private void BeginNewLoad()
