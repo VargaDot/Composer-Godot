@@ -92,7 +92,7 @@ namespace ComposerLib
                 return;
             }
 
-            SetDeferred(PropertyName.ProcessMode,(int)ProcessModeEnum.Disabled);
+            SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Disabled);
         }
 
         private void BeginNewLoad()
