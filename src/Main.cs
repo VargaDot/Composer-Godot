@@ -10,7 +10,7 @@ public partial class Main : Node2D
         Composer.AddScene("MainMenu","res://src/main_menu.tscn", new(){
             InstantLoad = true,
             InstantCreate = true,
-            SceneParent = this
+            DefaultParent = this
         });
     }
 }
