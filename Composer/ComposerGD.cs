@@ -34,7 +34,7 @@ namespace ComposerLib
 
         private Composer Composer;
         private readonly Array<string> AllowedSettings = new(){
-            "DefaultParent",
+            "SceneParent",
             "InstantCreate",
             "InstantLoad",
             "DisableProcessing",
@@ -143,9 +143,9 @@ namespace ComposerLib
         {
             switch(cleanedKey)
             {
-                case "DefaultParent":
+                case "SceneParent":
                 {
-                    settings.DefaultParent = (Node)dictSettings[key];
+                    settings.SceneParent = (Node)dictSettings[key];
                     break;
                 }
                 case "InstantCreate":

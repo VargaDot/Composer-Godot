@@ -121,7 +121,7 @@ namespace ComposerLib
             if (!CheckForNull(scene, "CreateScene")) return;
 
             if (newParent != null)
-                scene.Settings.DefaultParent = newParent;
+                scene.Settings.SceneParent = newParent;
 
             scene.Create();
         }
@@ -137,7 +137,7 @@ namespace ComposerLib
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node newParent = null)
         {
             if (newParent != null)
-                GetScene(sceneToAdd).Settings.DefaultParent = newParent;
+                GetScene(sceneToAdd).Settings.SceneParent = newParent;
 
             RemoveScene(sceneToRemove);
             CreateScene(sceneToAdd);
