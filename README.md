@@ -15,8 +15,10 @@ This library excels in loading scenes [asynchronously](https://en.wikipedia.org/
 - [Autoload](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) `Composer.cs` and if you plan to use it from `.gd` files, autoload `ComposerGD.cs` as well
 
 ## ⚙️ Usage
-Disclaimer: If you're using Composer from gdscript files, just change `Composer.` with `ComposerGD.` unless stated otherwise
-### Scene Creation
+Disclaimer: If you're utilizing ComposerGD, replace `Composer.` to `ComposerGD.` in the provided C# code snippets unless a GDScript example is presented.
+<details>
+<summary><strong>Scene Creation</strong></summary>
+
 **Method 1:**\
 First, add a reference name and path to the *Manifest*.
 ```
@@ -27,9 +29,9 @@ We then create it.
 ```
 Composer.CreateScene("MyScene")
 ```
-
+\
 **Method 2:**\
-We can add scenes and create them instantly using *SceneSettings* without needing to call `CreateScene()`
+We can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene()`.
 
 C#:
 ```
@@ -38,6 +40,14 @@ Composer.AddScene("MyScene", "res://path/to/MyScene", new(){
 })
 ```
 
+GDScript:
+```
+ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
+    "instant_create":true,
+})
+```
 
+**Method 3:**\
+We can add a scene with the export method.
 
-
+</details>
