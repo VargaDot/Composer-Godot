@@ -71,13 +71,13 @@ if the SceneParent is null, Composer will fallback to `/root`.
 **Replacing Scenes:**\
 To replace a scene with another one, we use the `ReplaceScene` Method.
 ```
-Composer.ReplaceScene("SceneToReplace", "NewScene")
+Composer.ReplaceScene("MyScene", "NewScene")
 ```
 
 **Reloading Scenes:**\
 To reload a scene, use the `ReloadScene` Method.
 ```
-Composer.ReloadScene("SceneToReload")
+Composer.ReloadScene("MyScene")
 ```
 
 **Run Scenes**\
@@ -95,8 +95,18 @@ Composer.DisableScene("MyScene")
 </details>
 
 <details>
-<summary>Scene Removal</summary>
+<summary><strong>Scene Removal</strong></summary>
 
-    
-    
+**Remove Scenes from tree:**\
+Remove the scene only from the tree.
+```
+Composer.RemoveScene("MyScene")
+```
+
+**Dispose of scene from memory:**\
+Completely remove every reference and mention of the scene. 
+```
+Composer.DisposeScene("MyScene")
+```
+
 </details>
