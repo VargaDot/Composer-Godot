@@ -25,13 +25,13 @@ First, add a reference name and path to the *Manifest*.
 Composer.AddScene("MyScene", "res://path/to/MyScene")
 ```
 
-We then create it.
+Then create it.
 ```
 Composer.CreateScene("MyScene")
 ```
 \
 **Method 2:**\
-We can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene()`.
+We can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
 
 C#:
 ```
@@ -49,5 +49,22 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 
 **Method 3:**\
 We can add a scene with the export method.
+
+**Method x:**\
+We can add scenes using packed resources.
+
+**Method x:**\
+We can add scenes with "InstantCreate = true" in bulk.
+
+**Method x:**\
+We can create scenes in bulk.
+
+</details>
+
+<details>
+<summary><strong>Scene Handling</strong></summary>
+
+**Replacing Scenes:**\
+To replace a scene with another, we use the `ReplaceScene` Method.
 
 </details>
