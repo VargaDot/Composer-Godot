@@ -64,7 +64,39 @@ We can create scenes in bulk.
 <details>
 <summary><strong>Scene Handling</strong></summary>
 
-**Replacing Scenes:**\
-To replace a scene with another, we use the `ReplaceScene` Method.
+**Assigning Parents:**\
+By default, scenes will be instantiated as children of `/root`, you can assign a custom parent with the SceneParent setting.
+if the SceneParent is null, Composer will fallback to `/root`.
 
+**Replacing Scenes:**\
+To replace a scene with another one, we use the `ReplaceScene` Method.
+```
+Composer.ReplaceScene("SceneToReplace", "NewScene")
+```
+
+**Reloading Scenes:**\
+To reload a scene, use the `ReloadScene` Method.
+```
+Composer.ReloadScene("SceneToReload")
+```
+
+**Run Scenes**\
+Use `EnableScene` to run a scene, useful for making it run in the background. 
+```
+Composer.EnableScene("MyScene")
+```
+
+**Stop Scenes:**\
+Stop or Pause scenes using `DisableScene`
+```
+Composer.DisableScene("MyScene")
+```
+
+</details>
+
+<details>
+<summary>Scene Removal</summary>
+
+    
+    
 </details>
