@@ -54,7 +54,10 @@ We can add a scene with the export method.
 We can add scenes using packed resources.
 
 **Method x:**\
-We can add scenes with "InstantCreate = true" in bulk.
+We can add scenes using a Scene class.
+
+**Method x:**\
+We can add scenes with in bulk.
 
 **Method x:**\
 We can create scenes in bulk.
