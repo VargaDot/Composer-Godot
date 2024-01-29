@@ -110,3 +110,29 @@ Composer.DisposeScene("MyScene")
 ```
 
 </details>
+
+<details>
+<summary><strong>Misc - Name to be determined</strong></summary>
+
+**Loading Scenes:**\
+Method to load scenes.
+```
+Composer.LoadScene("MyScene")
+```
+
+**Bulk Loading:**\
+Method to bulk load scenes
+```
+Composer.LoadScenes("MyScene")
+```
+
+**Get Scene:**\
+Returns the `Scene` class.
+```
+Composer.GetScene("MyScene")
+```
+
+</details>
+
+## Demonstrations
+Check out [Composer-Demos](https://github.com/VargaDot/Composer-Demos) for examples of how Composer can be implemented.
