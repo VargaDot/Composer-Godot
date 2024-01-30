@@ -159,17 +159,6 @@ Composer.DisposeScene("MyScene")
 </details>
 
 <details>
-<summary><strong>Misc - Name to be determined</strong></summary>
-
-**Get Scene:**\
-Returns the `Scene` class.
-```
-Composer.GetScene("MyScene")
-```
-
-</details>
-
-<details>
 <summary><strong>Signals</strong></summary>
 
 </details>
