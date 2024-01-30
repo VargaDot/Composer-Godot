@@ -175,6 +175,14 @@ namespace ComposerLib
             ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisabled, name);
         }
 
+        public void UnloadScene(string name)
+        {
+            var scene = GetScene(name);
+            if (!CheckForNull(scene, "UnloadScene")) return;
+
+            scene.Unload();
+        }
+
         public void RemoveScene(string name)
         {
             var scene = GetScene(name);

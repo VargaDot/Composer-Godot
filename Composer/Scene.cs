@@ -110,6 +110,12 @@ namespace ComposerLib
             Instance.ProcessMode = Node.ProcessModeEnum.Disabled;
         }
 
+        public void Unload()
+        {
+            Resource?.Dispose();
+            Resource = null;
+        }
+
         public void Remove()
         {
             Instance?.QueueFree();
@@ -118,11 +124,8 @@ namespace ComposerLib
 
         public new void Dispose()
         {
-            Resource?.Dispose();
-            Instance?.QueueFree();
-
-            Resource = null;
-            Instance = null;
+            Unload();
+            Remove();
         }
 
         internal void OnLoaded(Scene scene, PackedScene resource)

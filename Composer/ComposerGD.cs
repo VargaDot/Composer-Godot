@@ -108,6 +108,11 @@ namespace ComposerLib
             Composer.DisableScene(name);
         }
 
+        public void UnloadScene(string name)
+        {
+            Composer.UnloadScene(name);
+        }
+
         public void RemoveScene(string name)
         {
             Composer.RemoveScene(name);
