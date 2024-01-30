@@ -29,11 +29,6 @@ Composer.AddScene("MyScene", "res://path/to/MyScene")
 ```
 Composer.CreateScene("MyScene")
 ```
-
-+ You can also directly specify a parent for the scene in CreateScene with an optional parameter:
-```
-Composer.CreateScene("MyScene", parent)
-```
 \
 **Method 2:**
 + You can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
@@ -52,7 +47,23 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 })
 ```
 
-+ With SceneSettings, you can also disable autoloading the PackedScene resource with `InstantLoad` parameter set to false.
++ You can also set a custom parent
+
+C#:
+```
+Composer.AddScene("MyScene", "res://path/to/MyScene", new(){
+    InstantCreate = true,
+})
+```
+\
+GDScript:
+```
+ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
+    "instant_create":true,
+})
+```
+
++ You can also disable autoloading the PackedScene resource with `InstantLoad` parameter set to false.
 
 C#:
 ```
@@ -101,14 +112,10 @@ There are also specific methods called `LoadScenes` and `CreateScenes` for loadi
 var scene = Composer.GetScene("MyScene")
 ```
 
-**Assigning Parents:**
-+ By default, scenes will be instantiated as children of `/root`, you can assign a custom parent with the SceneParent setting.
-if the SceneParent is null, Composer will fallback to `/root`.
-
 **Replacing Scenes:**
-+ To replace a scene with another one, we use the `ReplaceScene` Method. You can also specify an optional new parent for the replacement scene (default is null meaning use the current parent).
++ To replace a scene with another one, we use the `ReplaceScene` Method.
 ```
-Composer.ReplaceScene("MyScene", "NewScene", newParent)
+Composer.ReplaceScene("MyScene", "NewScene")
 ```
 
 **Reloading Scenes:**
@@ -128,6 +135,44 @@ Composer.EnableScene("MyScene")
 ```
 Composer.DisableScene("MyScene")
 ```
+
+</details>
+
+<details>
+<summary><strong>Assigning Custom Parents</strong></summary>
+
++ By default, scenes will be instantiated as children of `/root`. However, you can assign a custom parent through a multitude of ways.
+
+**Method 1:**
++ With SceneSettings
+
+C#:
+```
+Composer.AddScene(//Other parameters, new(){
+    SceneParent = parent,
+})
+```
+\
+GDScript:
+```
+ComposerGD.AddScene(//Other parameters, {
+    "scene_parent":parent
+})
+```
+
+**Method 2:**
++ Through CreateScene with an optional parameter.
+```
+Composer.CreateScene("MyScene", parent)
+```
+
+**Method 3:**
++ Using the ReplaceScene Method.
+```
+Composer.ReplaceScene(//Other parameters, newParent)
+```
+
++ If SceneParent is null, Composer will fallback to `/root`.
 
 </details>
 
