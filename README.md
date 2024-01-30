@@ -29,9 +29,14 @@ Then create it.
 ```
 Composer.CreateScene("MyScene")
 ```
+
+You can also directly specify a parent for the scene in CreateScene with an optional parameter:
+```
+Composer.CreateScene("MyScene", parent)
+```
 \
 **Method 2:**\
-We can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
+You can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
 
 C#:
 ```
@@ -47,34 +52,73 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 })
 ```
 
+With SceneSettings, you can also disable autoloading the PackedScene resource with `InstantLoad` parameter set to false.
+
+C#:
+```
+Composer.AddScene("MyScene", "res://path/to/MyScene", new(){
+    InstantLoad = false,
+})
+```
+
+GDScript:
+```
+ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
+    "instant_load":false,
+})
+```
+
+To later load a scene, you can then call `LoadScene` method:
+
+C#:
+```
+Composer.LoadScene("MyScene")
+```
+
+GDScript:
+```
+ComposerGD.LoadScene("MyScene")
+```
+
 **Method 3:**\
-We can add a scene with the export method.
+You can add a prexisting scene that has been either created by making an instance of the *Scene* class or created directly in the editor itself, using Resources.
 
-**Method x:**\
-We can add scenes using packed resources.
+C#:
+```
+var scene = new Scene("MyScene","res://path/to/MyScene")
 
-**Method x:**\
-We can add scenes using a Scene class.
+Composer.AddScene(scene)
+```
 
-**Method x:**\
-We can add scenes with in bulk.
+If you have multiple scenes already created, you can also use the `AddScenes` method. It takes an Array of *Scene* instances.
 
-**Method x:**\
-We can create scenes in bulk.
+```
+Composer.AddScenes(new (){
+    scene1, scene2, scene3, ...
+})
+```
+
+There are also specific methods called `LoadScenes` and `CreateScenes` for loading/creating multiple scenes at once. They too only take one parameter, this being an Array of *Scene* instances.
 
 </details>
 
 <details>
 <summary><strong>Scene Handling</strong></summary>
 
+**Get Scene:**\
+Returns the `Scene` class based on the InternalName of the scene. Useful for making direct interactions with the instance.
+```
+var scene = Composer.GetScene("MyScene")
+```
+
 **Assigning Parents:**\
 By default, scenes will be instantiated as children of `/root`, you can assign a custom parent with the SceneParent setting.
 if the SceneParent is null, Composer will fallback to `/root`.
 
 **Replacing Scenes:**\
-To replace a scene with another one, we use the `ReplaceScene` Method.
+To replace a scene with another one, we use the `ReplaceScene` Method. You can also specify an optional new parent for the replacement scene (default is null meaning use the current parent).
 ```
-Composer.ReplaceScene("MyScene", "NewScene")
+Composer.ReplaceScene("MyScene", "NewScene", newParent)
 ```
 
 **Reloading Scenes:**\
@@ -84,13 +128,13 @@ Composer.ReloadScene("MyScene")
 ```
 
 **Run Scenes**\
-Use `EnableScene` to run a scene, useful for making it run in the background. 
+Use `EnableScene` to run a scene, useful for unpausing. 
 ```
 Composer.EnableScene("MyScene")
 ```
 
 **Stop Scenes:**\
-Stop or Pause scenes using `DisableScene`
+Use `EnableScene` to stop a scene, useful for pausing. 
 ```
 Composer.DisableScene("MyScene")
 ```
@@ -107,35 +151,10 @@ Composer.RemoveScene("MyScene")
 ```
 
 **Dispose of scene from memory:**\
-Completely remove every reference and mention of the scene. 
+Completely remove the scene from memory (this also removes the instance and gets rid of loaded PackedScene). 
 ```
 Composer.DisposeScene("MyScene")
 ```
-
-</details>
-
-<details>
-<summary><strong>Misc - Name to be determined</strong></summary>
-
-**Loading Scenes:**\
-Method to load scenes.
-```
-Composer.LoadScene("MyScene")
-```
-
-**Bulk Loading:**\
-Method to bulk load scenes
-```
-Composer.LoadScenes("MyScene")
-```
-
-**Get Scene:**\
-Returns the `Scene` class.
-```
-Composer.GetScene("MyScene")
-```
-
-</details>
 
 ## Demonstrations
 Check out [Composer-Demos](https://github.com/VargaDot/Composer-Demos) for examples of how Composer can be implemented.
