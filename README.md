@@ -156,5 +156,23 @@ Completely remove the scene from memory (this also removes the instance and gets
 Composer.DisposeScene("MyScene")
 ```
 
+</details>
+
+<details>
+<summary><strong>Misc - Name to be determined</strong></summary>
+
+**Get Scene:**\
+Returns the `Scene` class.
+```
+Composer.GetScene("MyScene")
+```
+
+</details>
+
+<details>
+<summary><strong>Signals</strong></summary>
+
+</details>
+
 ## Demonstrations
 Check out [Composer-Demos](https://github.com/VargaDot/Composer-Demos) for examples of how Composer can be implemented.
