@@ -19,24 +19,24 @@ Disclaimer: If you're utilizing ComposerGD, replace `Composer.` to `ComposerGD.`
 <details>
 <summary><strong>Scene Creation</strong></summary>
 
-**Method 1:**\
-First, add a reference name and path to the *Manifest*.
+**Method 1:**
++ First, add a reference name and path to the *Manifest*.
 ```
 Composer.AddScene("MyScene", "res://path/to/MyScene")
 ```
 
-Then create it.
++ Then create it.
 ```
 Composer.CreateScene("MyScene")
 ```
 
-You can also directly specify a parent for the scene in CreateScene with an optional parameter:
++ You can also directly specify a parent for the scene in CreateScene with an optional parameter:
 ```
 Composer.CreateScene("MyScene", parent)
 ```
 \
-**Method 2:**\
-You can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
+**Method 2:**
++ You can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
 
 C#:
 ```
@@ -44,7 +44,7 @@ Composer.AddScene("MyScene", "res://path/to/MyScene", new(){
     InstantCreate = true,
 })
 ```
-
+\
 GDScript:
 ```
 ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
@@ -52,7 +52,7 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 })
 ```
 
-With SceneSettings, you can also disable autoloading the PackedScene resource with `InstantLoad` parameter set to false.
++ With SceneSettings, you can also disable autoloading the PackedScene resource with `InstantLoad` parameter set to false.
 
 C#:
 ```
@@ -60,7 +60,7 @@ Composer.AddScene("MyScene", "res://path/to/MyScene", new(){
     InstantLoad = false,
 })
 ```
-
+\
 GDScript:
 ```
 ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
@@ -68,30 +68,20 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 })
 ```
 
-To later load a scene, you can then call `LoadScene` method:
-
-C#:
++ To later load a scene, you can then call `LoadScene` method:
 ```
 Composer.LoadScene("MyScene")
 ```
 
-GDScript:
-```
-ComposerGD.LoadScene("MyScene")
-```
-
-**Method 3:**\
-You can add a prexisting scene that has been either created by making an instance of the *Scene* class or created directly in the editor itself, using Resources.
-
-C#:
+**Method 3:**
++ You can add a prexisting scene that has been either created by making an instance of the *Scene* class or created directly in the editor itself, using Resources.
 ```
 var scene = new Scene("MyScene","res://path/to/MyScene")
 
 Composer.AddScene(scene)
 ```
 
-If you have multiple scenes already created, you can also use the `AddScenes` method. It takes an Array of *Scene* instances.
-
++ If you have multiple scenes already created, you can also use the `AddScenes` method. It takes an Array of *Scene* instances.
 ```
 Composer.AddScenes(new (){
     scene1, scene2, scene3, ...
@@ -105,36 +95,36 @@ There are also specific methods called `LoadScenes` and `CreateScenes` for loadi
 <details>
 <summary><strong>Scene Handling</strong></summary>
 
-**Get Scene:**\
-Returns the `Scene` class based on the InternalName of the scene. Useful for making direct interactions with the instance.
+**Get Scene:**
++ Returns the `Scene` class based on the InternalName of the scene. Useful for making direct interactions with the instance.
 ```
 var scene = Composer.GetScene("MyScene")
 ```
 
-**Assigning Parents:**\
-By default, scenes will be instantiated as children of `/root`, you can assign a custom parent with the SceneParent setting.
+**Assigning Parents:**
++ By default, scenes will be instantiated as children of `/root`, you can assign a custom parent with the SceneParent setting.
 if the SceneParent is null, Composer will fallback to `/root`.
 
-**Replacing Scenes:**\
-To replace a scene with another one, we use the `ReplaceScene` Method. You can also specify an optional new parent for the replacement scene (default is null meaning use the current parent).
+**Replacing Scenes:**
++ To replace a scene with another one, we use the `ReplaceScene` Method. You can also specify an optional new parent for the replacement scene (default is null meaning use the current parent).
 ```
 Composer.ReplaceScene("MyScene", "NewScene", newParent)
 ```
 
-**Reloading Scenes:**\
-To reload a scene, use the `ReloadScene` Method.
+**Reloading Scenes:**
++ To reload a scene, use the `ReloadScene` Method.
 ```
 Composer.ReloadScene("MyScene")
 ```
 
-**Run Scenes**\
-Use `EnableScene` to run a scene, useful for unpausing. 
+**Run Scenes**
++ Use `EnableScene` to run a scene, useful for unpausing. 
 ```
 Composer.EnableScene("MyScene")
 ```
 
-**Stop Scenes:**\
-Use `EnableScene` to stop a scene, useful for pausing. 
+**Stop Scenes:**
++ Use `EnableScene` to stop a scene, useful for pausing. 
 ```
 Composer.DisableScene("MyScene")
 ```
@@ -144,14 +134,20 @@ Composer.DisableScene("MyScene")
 <details>
 <summary><strong>Scene Removal</strong></summary>
 
-**Remove Scenes from tree:**\
-Remove the scene only from the tree.
+**Unload Scene:**
++ Removes the scene resource.
+```
+Composer.UnloadScene("MyScene")
+```
+
+**Remove Scene from tree:**
++ Removes the instance from the tree.
 ```
 Composer.RemoveScene("MyScene")
 ```
 
-**Dispose of scene from memory:**\
-Completely remove the scene from memory (this also removes the instance and gets rid of loaded PackedScene). 
+**Dispose of Scene from memory:**
++ Removes the instance, resource and InternalName.
 ```
 Composer.DisposeScene("MyScene")
 ```
