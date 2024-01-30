@@ -31,7 +31,7 @@ Composer.CreateScene("MyScene")
 ```
 \
 **Method 2:**\
-We can add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
+Add a scene and create it instantly using *SceneSettings*, without needing to call `CreateScene`.
 
 C#:
 ```
@@ -48,19 +48,24 @@ ComposerGD.AddScene("MyScene", "res://path/to/MyScene", {
 ```
 
 **Method 3:**\
-We can add a scene with the export method.
+Add a scene with the export method.
 
 **Method x:**\
-We can add scenes using packed resources.
+Add scenes using packed resources.
 
 **Method x:**\
-We can add scenes using a Scene class.
+Add scenes using a Scene class.
 
 **Method x:**\
-We can add scenes with in bulk.
+Add scenes with in bulk:
+```
+-- CODE --
+```
 
-**Method x:**\
-We can create scenes in bulk.
+Then create them:
+```
+-- CODE --
+```
 
 </details>
 
@@ -134,6 +139,11 @@ Returns the `Scene` class.
 ```
 Composer.GetScene("MyScene")
 ```
+
+</details>
+
+<details>
+<summary><strong>Signals</strong></summary>
 
 </details>
 
