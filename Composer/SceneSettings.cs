@@ -21,7 +21,7 @@ namespace ComposerLib
         private Node _sceneParent = ((SceneTree)Engine.GetMainLoop()).Root;
 
         [Export]
-        public bool InstantLoad {get; set;} = false;
+        public bool InstantLoad {get; set;} = true;
 
         [Export]
         public bool InstantCreate {get; set;} = false;
