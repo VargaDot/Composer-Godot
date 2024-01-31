@@ -201,6 +201,62 @@ Composer.DisposeScene("MyScene")
 <details>
 <summary><strong>Signals</strong></summary>
 
+Warning: If you are using ComposerGD, connect the signals from ComposerGD.
+
+**SceneBeganLoaded**
++ Emitted when scene has began its loading of Resource. Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneBeganLoaded(string sceneName)
+```
+
+**SceneLoaded**
++ Emitted when scene has finished its loading of Resource. Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneLoaded(string sceneName)
+```
+
+**SceneAllLoaded**
++ Emitted when every scene that has existed in the queue has been loaded.
+```
+SceneAllLoaded()
+```
+
+**SceneLoadingProcessUpdated**
++ Emitted with every process tick when the scene is being loaded. Fires with a sceneName parameter which is always the `InternalName` of the scene and also the progress parameter which represents the percentage of loading.
+```
+SceneLoadingProcessUpdated(string sceneName, float progress)
+```
+
+**SceneCreated**
++ Emitted when scene has finished creating via CreateScene(). Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneCreated(string sceneName)
+```
+
+**SceneEnabled**
++ Emitted when scene has been enabled via EnableScene(). Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneEnabled(string sceneName)
+```
+
+**SceneDisabled**
++ Emitted when scene has been disabled via DisableScene(). Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneDisabled(string sceneName)
+```
+
+**SceneRemoved**
++ Emitted when scene has been removed via RemoveScene(). Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneRemoved(string sceneName)
+```
+
+**SceneDisposed**
++ Emitted when scene has been disposed via DisposeScene(). Fires with a sceneName parameter which is always the `InternalName` of the scene.
+```
+SceneDisposed(string sceneName)
+```
+
 </details>
 
 ## Demonstrations
