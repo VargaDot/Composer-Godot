@@ -15,9 +15,9 @@ This library excels in loading scenes [asynchronously](https://en.wikipedia.org/
 - [Autoload](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) `Composer.cs` and if you plan to use it from `.gd` files, autoload `ComposerGD.cs` as well
 
 ## ⚙️ Usage
-Disclaimer: If you're utilizing ComposerGD, replace `Composer.` to `ComposerGD.` in the provided C# code snippets unless a GDScript example is presented.
+⚠️ Disclaimer: If you're utilizing ComposerGD, replace `Composer.` to `ComposerGD.` in the provided C# code snippets unless a GDScript example is presented.
 <details>
-<summary><strong>Scene Creation</strong></summary>
+<summary><strong>🔨 Scene Creation</strong></summary>
 
 **Method 1:**
 + First, add a reference name and path to the *Manifest*.
@@ -104,7 +104,7 @@ There are also specific methods called `LoadScenes` and `CreateScenes` for loadi
 </details>
 
 <details>
-<summary><strong>Scene Handling</strong></summary>
+<summary><strong>🏗️ Scene Handling</strong></summary>
 
 **Get Scene:**
 + Returns the `Scene` class based on the InternalName of the scene. Useful for making direct interactions with the instance.
@@ -139,7 +139,7 @@ Composer.DisableScene("MyScene")
 </details>
 
 <details>
-<summary><strong>Assigning Custom Parents</strong></summary>
+<summary><strong>📝 Assigning Custom Parents</strong></summary>
 
 + By default, scenes will be instantiated as children of `/root`. However, you can assign a custom parent through a multitude of ways.
 
@@ -176,7 +176,7 @@ Composer.ReplaceScene(//Other parameters, newParent)
 </details>
 
 <details>
-<summary><strong>Scene Removal</strong></summary>
+<summary><strong>🔥 Scene Removal</strong></summary>
 
 **Unload Scene:**
 + Removes the scene resource.
@@ -199,9 +199,9 @@ Composer.DisposeScene("MyScene")
 </details>
 
 <details>
-<summary><strong>Signals</strong></summary>
+<summary><strong>🚥 Signals</strong></summary>
 
-Warning: If you are using ComposerGD, connect the signals from ComposerGD.
+⚠️ Warning: If you are using ComposerGD, connect the signals from ComposerGD.
 
 **SceneBeganLoaded**
 + Emitted when scene has began its loading of Resource. Fires with a sceneName parameter which is always the `InternalName` of the scene.
