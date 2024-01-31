@@ -159,6 +159,7 @@ ComposerGD.AddScene(//Other parameters, {
     "scene_parent":parent
 })
 ```
++ If SceneParent is null, Composer will fallback to `/root`.
 
 **Method 2:**
 + Through CreateScene with an optional parameter.
@@ -171,8 +172,6 @@ Composer.CreateScene("MyScene", parent)
 ```
 Composer.ReplaceScene(//Other parameters, newParent)
 ```
-
-+ If SceneParent is null, Composer will fallback to `/root`.
 
 </details>
 
