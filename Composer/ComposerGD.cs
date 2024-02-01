@@ -5,33 +5,6 @@ namespace ComposerLib
 {
     public partial class ComposerGD : Node
     {
-        [Signal]
-        public delegate void SceneBeganLoadingEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void SceneLoadingProcessUpdatedEventHandler(string sceneName, float progress);
-
-        [Signal]
-        public delegate void SceneLoadedEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void ScenesAllLoadedEventHandler();
-
-        [Signal]
-        public delegate void SceneCreatedEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void SceneEnabledEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void SceneDisabledEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void SceneRemovedEventHandler(string sceneName);
-
-        [Signal]
-        public delegate void SceneDisposedEventHandler(string sceneName);
-
         private Composer Composer;
         private readonly Array<string> AllowedSettings = new(){
             "SceneParent",
@@ -42,10 +15,13 @@ namespace ComposerLib
             "CacheMode",
         };
 
-        public override void _Ready()
+        public override void _EnterTree()
         {
-            Composer = GetNode<Composer>("/root/Composer");
-            Composer.ComposerGD = this;
+            Composer = GetNodeOrNull<Composer>("/root/Composer");
+            if (Composer == null)
+            {
+                GD.PrintErr("ComposerGD Error: Composer has not been found.");
+            }
         }
 
         public Scene GetScene(string name)

@@ -32,8 +32,6 @@ namespace ComposerLib
         [Signal]
         public delegate void SceneDisposedEventHandler(string sceneName);
 
-
-        internal ComposerGD ComposerGD {get; set;} = null;
         private readonly Loader Loader = new();
         private Godot.Collections.Dictionary<string, Scene> SceneManifest = new();
 
@@ -162,7 +160,6 @@ namespace ComposerLib
 
             scene.Enable();
             EmitSignal(SignalName.SceneEnabled, name);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneEnabled, name);
         }
 
         public void DisableScene(string name)
@@ -172,7 +169,6 @@ namespace ComposerLib
 
             scene.Disable();
             EmitSignal(SignalName.SceneDisabled, name);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisabled, name);
         }
 
         public void UnloadScene(string name)
@@ -190,7 +186,6 @@ namespace ComposerLib
 
             scene.Remove();
             EmitSignal(SignalName.SceneRemoved, name);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneRemoved, name);
         }
 
         public void DisposeScene(string name)
@@ -204,7 +199,6 @@ namespace ComposerLib
             SceneManifest.Remove(name);
 
             EmitSignal(SignalName.SceneDisposed, name);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneDisposed, name);
         }
 
         private bool CheckIfExists(string name)
@@ -232,19 +226,16 @@ namespace ComposerLib
         private void OnSceneCreated(string sceneName)
         {
             EmitSignal(SignalName.SceneCreated, sceneName);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneCreated, sceneName);
         }
 
         private void OnSceneBeganLoading(Scene scene)
         {
             EmitSignal(SignalName.SceneBeganLoaded, scene.InternalName);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneBeganLoading, scene.InternalName);
         }
 
         private void OnLoadingUpdated(Scene scene, float progress)
         {
             EmitSignal(SignalName.SceneLoadingProcessUpdated, scene.InternalName, progress);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneLoadingProcessUpdated, scene.InternalName, progress);
         }
 
         private void OnLoadingAllFinished()
@@ -252,13 +243,11 @@ namespace ComposerLib
             Loader.Disable();
 
             EmitSignal(SignalName.ScenesAllLoaded);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.ScenesAllLoaded);
         }
 
         private void OnSceneLoaded(string sceneName)
         {
             EmitSignal(SignalName.SceneLoaded, sceneName);
-            ComposerGD?.EmitSignal(ComposerGD.SignalName.SceneLoaded, sceneName);
         }
 
         private void OnLoaderEnableRequested()

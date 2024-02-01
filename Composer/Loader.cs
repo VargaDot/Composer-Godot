@@ -85,7 +85,7 @@ namespace ComposerLib
             SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Inherit);
         }
 
-        internal void Disable()
+        internal async void Disable()
         {
             if (CurrentLoadedObject != null)
             {

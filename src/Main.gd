@@ -7,8 +7,8 @@ func _ready():
 		"scene_parent":self
 	})
 
-	await ComposerGD.SceneLoaded
+	await Composer.SceneLoaded
 	print("Scene MainMenu has been loaded.")
 
-	await ComposerGD.SceneCreated
+	await Composer.SceneCreated
 	print("Scene MainMenu has been created.")
