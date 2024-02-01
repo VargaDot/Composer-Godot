@@ -264,7 +264,7 @@ SceneDisposed(string sceneName)
 <details>
 <summary><strong>⚙️ SceneSettings</strong></summary>
 
-+ SceneSettings is a special class that provides an easy way to modify Scene's behaviour. They can be modified at any time, as long as the scene is present. Below is a list of all settings that currently exist:
++ SceneSettings is a special class that provides an easy way to modify Scene's behaviour. They can be modified at any time, as long as the scene is present in the *Manifest*. Below is a list of all existing settings:
 \
 ⚠️ Warning: When using ComposerGD, use dictionaries with names of the settings as strings. You can use both names in *snake_case* and *PascalCase*. Example: `{"instant_load":true}`
 **SceneParent**
