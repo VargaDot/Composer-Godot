@@ -100,7 +100,8 @@ Composer.AddScenes(new (){
 ```
 
 There are also specific methods called `LoadScenes` and `CreateScenes` for loading/creating multiple scenes at once. They too only take one parameter, this being an Array of *Scene* instances.
-
+\
+⚠️ Warning: This method currently does not exist in ComposerGD as it is experimental. `LoadScenes` and `CreateScenes` are also unavaliable.
 </details>
 
 <details>
@@ -159,7 +160,7 @@ ComposerGD.AddScene(//Other parameters, {
     "scene_parent":parent
 })
 ```
-+ If SceneParent is null, Composer will fallback to `/root`.
+⚠️ Warning: If SceneParent isn't a valid parent, Composer will fallback to `/root`.
 
 **Method 2:**
 + Through CreateScene with an optional parameter.
@@ -173,6 +174,7 @@ Composer.CreateScene("MyScene", parent)
 Composer.ReplaceScene(//Other parameters, newParent)
 ```
 
+⚠️ Warning: If the newParent isn't a valid parent, Composer will fallback to `/root`.
 </details>
 
 <details>
@@ -201,7 +203,7 @@ Composer.DisposeScene("MyScene")
 <details>
 <summary><strong>🚥 Signals</strong></summary>
 
-⚠️ Warning: If you are using ComposerGD, connect the signals from ComposerGD.
+⚠️ Warning: Even if you are using ComposerGD, connect the signals from regular Composer.
 
 **SceneBeganLoaded**
 + Emitted when scene has began its loading of Resource. Fires with a sceneName parameter which is always the `InternalName` of the scene.
@@ -257,6 +259,50 @@ SceneRemoved(string sceneName)
 SceneDisposed(string sceneName)
 ```
 
+</details>
+
+<details>
+<summary><strong>⚙️ SceneSettings</strong></summary>
+
++ SceneSettings is a special class that provides an easy way to modify Scene's behaviour. They can be modified at any time, as long as the scene is present. Below is a list of all settings that currently exist:
+
+**SceneParent**
+```
+Node SceneParent = ((SceneTree)Engine.GetMainLoop()).Root;
+```
++ A node which is/will be the parent of the Scene's Resource when it is instantiated. Default is `/root`.
+\
+⚠️ Warning: When set with an invalid parent, Composer will fallback to `/root`.
+
+**InstantLoad**
+```
+bool InstantLoad = true
+```
++ A flag which will automatically load the scene's Resource upon creation of Scene's instance. Default is true.
+
+**InstantCreate**
+```
+bool InstantCreate = false
+```
++ A flag which will automatically create an instance of the Scene's Resource and add it to the tree. Default is false.
+
+**DisableProcessing**
+```
+bool DisableProcessing = false
+```
++ A flag which will automatically disable the Scene's Resource instance upon creation. Default is false.
+
+**UseSubthreads**
+```
+bool UseSubthreads = false
+```
++ A flag which will activate loading of the Resource using subthreads. Learn more about this [here](https://docs.godotengine.org/en/stable/classes/class_resourceloader.html#class-resourceloader-method-load-threaded-request). Default is false.
+
+**CacheMode**
+```
+ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse
+```
++ A value which sets the CacheMode when loading Scene's Resource. Learn more about this [here](https://docs.godotengine.org/en/stable/classes/class_resourceloader.html#enum-resourceloader-cachemode). Default is CacheMode.Reuse.
 </details>
 
 ## Demonstrations
