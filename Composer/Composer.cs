@@ -118,7 +118,7 @@ namespace ComposerLib
             var scene = GetScene(name);
             if (!CheckForNull(scene, "CreateScene")) return;
 
-            if (newParent != null)
+            if (IsInstanceValid(newParent))
                 scene.Settings.SceneParent = newParent;
 
             scene.Create();
@@ -134,7 +134,7 @@ namespace ComposerLib
 
         public void ReplaceScene(string sceneToRemove, string sceneToAdd, Node newParent = null)
         {
-            if (newParent != null)
+            if (IsInstanceValid(newParent))
                 GetScene(sceneToAdd).Settings.SceneParent = newParent;
 
             RemoveScene(sceneToRemove);
