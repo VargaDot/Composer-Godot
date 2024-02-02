@@ -37,7 +37,7 @@ namespace ComposerLib
 
         public override void _EnterTree()
         {
-            AddChild(Loader, true);
+            AddChild(Loader);
             Loader.Name = "Loader";
             Loader.LoaderStarted += OnSceneBeganLoading;
             Loader.LoaderLoadingUpdated += OnLoadingUpdated;

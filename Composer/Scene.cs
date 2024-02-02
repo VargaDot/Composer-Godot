@@ -6,10 +6,10 @@ namespace ComposerLib
     public partial class Scene : Resource
     {
         [Signal]
-        public delegate void FinishedLoadingEventHandler(string sceneName);
+        internal delegate void FinishedLoadingEventHandler(string sceneName);
 
         [Signal]
-        public delegate void FinishedCreatingEventHandler(string sceneName);
+        internal delegate void FinishedCreatingEventHandler(string sceneName);
 
         [Export]
         public string InternalName {get; private set;}

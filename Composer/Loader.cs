@@ -89,9 +89,8 @@ namespace ComposerLib
         {
             if (CurrentLoadedObject != null)
             {
-                GD.Print("Loader is loading an object, awaiting process to end...");
+                GD.Print($"Warning: Loader is currently loading scene: {CurrentLoadedObject.Scene.InternalName}. Loader will disable after current loading is finished.");
                 await ToSignal(this, SignalName.LoaderFinished);
-                GD.Print("Object Loaded, proceeding to disable...");
             }
 
             SetDeferred(PropertyName.ProcessMode, (int)ProcessModeEnum.Disabled);
