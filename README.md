@@ -305,6 +305,3 @@ ResourceLoader.CacheMode CacheMode = ResourceLoader.CacheMode.Reuse
 ```
 + A value which sets the CacheMode when loading Scene's Resource. Learn more about this [here](https://docs.godotengine.org/en/stable/classes/class_resourceloader.html#enum-resourceloader-cachemode). Default is CacheMode.Reuse.
 </details>
-
-## Demonstrations
-Check out [Composer-Demos](https://github.com/VargaDot/Composer-Demos) for examples of how Composer can be implemented.
