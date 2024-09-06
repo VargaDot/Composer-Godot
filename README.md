@@ -15,7 +15,7 @@ This library excels in loading scenes [asynchronously](https://en.wikipedia.org/
 - [Autoload](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html) `Composer.cs` and if you plan to use it from `.gd` files, autoload `ComposerGD.cs` as well
 
 ## ⚙️ Usage
-⚠️ Disclaimer: If you're utilizing ComposerGD, replace `Composer.` to `ComposerGD.` in the provided C# code snippets unless a GDScript example is presented.
+⚠️ Disclaimer: Simply replace `Composer.` with `ComposerGD.` if no GDscript example is provided.
 <details>
 <summary><strong>🔨 Scene Creation</strong></summary>
 
